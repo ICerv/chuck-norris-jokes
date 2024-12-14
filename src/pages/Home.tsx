@@ -1,26 +1,39 @@
-import React, { useEffect } from 'react';
-import { Button, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Button, CircularProgress, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchRandomJoke } from '../services/api';
 import { RootState } from '../redux/store';
+
 const Home = (): React.ReactElement => {
   const dispatch = useDispatch();
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
   const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
+  const [loading, setLoading] = useState(true);
 
   const handleGetJoke = async () => {
+    setLoading(true);
     try {
       const randomJoke = await fetchRandomJoke();
       dispatch(setJoke({ joke: randomJoke.joke, iconUrl: randomJoke.iconUrl }));
     } catch (error) {
       console.error('Error fetching joke:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     handleGetJoke();
   }, []);
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
@@ -37,8 +50,9 @@ const Home = (): React.ReactElement => {
       )}
 
       <Typography style={{ marginTop: '1rem' }}>
-        {joke || 'Loading joke...'}
+        {joke || 'No joke available'}
       </Typography>
+
       <Button
         variant="contained"
         color="primary"
