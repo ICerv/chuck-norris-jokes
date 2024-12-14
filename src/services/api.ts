@@ -27,3 +27,19 @@ export const fetchJokeByQuery = async (query: string) => {
     iconUrl: selectedJoke.icon_url,
   };
 };
+export const fetchJokeCategories = async (): Promise<string[]> => {
+  const response = await axios.get(`${API_BASE}/jokes/categories`);
+  return response.data;
+};
+
+export const fetchJokeByCategory = async (
+  category: string,
+): Promise<{ joke: string; iconUrl: string }> => {
+  const response = await axios.get(`${API_BASE}/jokes/random`, {
+    params: { category },
+  });
+  return {
+    joke: response.data.value,
+    iconUrl: response.data.icon_url,
+  };
+};
