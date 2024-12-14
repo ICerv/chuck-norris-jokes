@@ -7,11 +7,12 @@ import { RootState } from '../redux/store';
 const Home = (): React.ReactElement => {
   const dispatch = useDispatch();
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
+  const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
 
   const handleGetJoke = async () => {
     try {
       const randomJoke = await fetchRandomJoke();
-      dispatch(setJoke(randomJoke.value));
+      dispatch(setJoke({ joke: randomJoke.joke, iconUrl: randomJoke.iconUrl }));
     } catch (error) {
       console.error('Error fetching joke:', error);
     }
@@ -22,6 +23,14 @@ const Home = (): React.ReactElement => {
       <Typography variant="h4" gutterBottom>
         Chuck Norris Jokes
       </Typography>
+
+      {iconUrl && (
+        <img
+          src={iconUrl}
+          alt="Chuck Norris Icon"
+          style={{ marginTop: '1rem', width: 80, height: 80 }}
+        />
+      )}
 
       <Typography style={{ marginTop: '1rem' }}>
         {joke || 'Click the button to get a joke!'}
