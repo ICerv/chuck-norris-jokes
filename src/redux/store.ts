@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
+import jokeReducer from './jokeSlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: { joke: jokeReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
