@@ -9,6 +9,7 @@ import { Menu, MenuItem, Button } from '@mui/material';
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -28,6 +29,7 @@ const App: React.FC = () => {
 
   const handleCategoryClick = async (category: string) => {
     try {
+      setSelectedCategory(category);
       const jokeData = await fetchJokeByCategory(category);
       dispatch(setJoke({ joke: jokeData.joke, iconUrl: jokeData.iconUrl }));
       setAnchorEl(null);
@@ -76,7 +78,7 @@ const App: React.FC = () => {
           </Menu>
         </nav>
 
-        <Home />
+        <Home selectedCategory={selectedCategory} />
 
         {errorMessage && (
           <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>

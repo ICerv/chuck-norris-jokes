@@ -6,13 +6,18 @@ import {
   CircularProgress,
   Box,
   Container,
+  Chip,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchRandomJoke, fetchJokeByQuery } from '../services/api';
 import { RootState } from '../redux/store';
 
-const Home: React.FC = () => {
+interface HomeProps {
+  selectedCategory: string | null;
+}
+
+const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
   const dispatch = useDispatch();
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
   const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
@@ -112,24 +117,39 @@ const Home: React.FC = () => {
         )}
 
         {/* Joke Section */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '2rem',
-          }}
-        >
-          {iconUrl && (
-            <img
-              src={iconUrl}
-              alt="Chuck Norris Icon"
-              style={{ marginRight: '1rem', width: 80, height: 80 }}
-            />
-          )}
-          <Typography sx={{ fontSize: '1.2rem', textAlign: 'left' }}>
-            {joke || 'No joke available'}
-          </Typography>
+        <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              marginTop: '2rem',
+            }}
+          >
+            {iconUrl && (
+              <img
+                src={iconUrl}
+                alt="Chuck Norris Icon"
+                style={{ marginRight: '1rem', width: 80, height: 80 }}
+              />
+            )}
+
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography sx={{ fontSize: '1.2rem', textAlign: 'left' }}>
+                {joke || 'No joke available'}
+              </Typography>
+
+              {selectedCategory && (
+                <Box sx={{ marginTop: '2.5rem', textAlign: 'left' }}>
+                  <Chip
+                    label={selectedCategory}
+                    color="primary"
+                    sx={{ fontSize: '1rem' }}
+                  />
+                </Box>
+              )}
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Container>
