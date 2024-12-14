@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
@@ -18,6 +18,10 @@ const Home = (): React.ReactElement => {
     }
   };
 
+  useEffect(() => {
+    handleGetJoke();
+  }, []);
+
   return (
     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
       <Typography variant="h4" gutterBottom>
@@ -33,7 +37,7 @@ const Home = (): React.ReactElement => {
       )}
 
       <Typography style={{ marginTop: '1rem' }}>
-        {joke || 'Click the button to get a joke!'}
+        {joke || 'Loading joke...'}
       </Typography>
       <Button
         variant="contained"
