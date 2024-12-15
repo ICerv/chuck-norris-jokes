@@ -1,10 +1,20 @@
+import Chip from '@mui/material/Chip';
 import React from 'react';
-import { Box, Typography, Chip, useMediaQuery, useTheme } from '@mui/material';
+
+interface Board {
+  points: string;
+}
+
+const boardAreas: Board[] = [
+  {
+    points: '168,214,436,216,435,401,168,404',
+  },
+];
 
 interface JokeSectionProps {
-  joke: string | null;
-  iconUrl: string | null;
-  category: string | null;
+  joke: string;
+  iconUrl?: string;
+  category?: string;
 }
 
 const JokeSection: React.FC<JokeSectionProps> = ({
@@ -12,54 +22,73 @@ const JokeSection: React.FC<JokeSectionProps> = ({
   iconUrl,
   category,
 }) => {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Box
-      sx={{
-        textAlign: 'center',
-        width: { xs: '90%', sm: '70%', md: '40%' },
-        padding: '1rem',
-        borderRadius: '8px',
-        color: isSm ? theme.palette.text.primary : theme.palette.common.white,
-      }}
-    >
-      {/* Joke Icon */}
-      {iconUrl && (
-        <img
-          src={iconUrl}
-          alt="Chuck Norris Icon"
-          style={{
-            width: 60,
-            height: 60,
-            marginBottom: '1rem',
-          }}
-        />
-      )}
+    <div style={{ position: 'relative', maxWidth: '900px', margin: 'auto' }}>
+      {/* Background Image */}
+      <img
+        src="/images/chuck_norris_desktop.png"
+        alt="Chuck Norris Board"
+        style={{ width: '100%', height: 'auto', display: 'block' }}
+      />
 
-      {/* Joke Text */}
-      <Typography
-        variant="h6"
-        sx={{
-          fontFamily: "'Caveat', cursive",
-          fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
-          lineHeight: 1.5,
+      {/* SVG Polygon and Content */}
+      <svg
+        viewBox="0 0 500 500"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
         }}
       >
-        {joke || 'No joke available'}
-      </Typography>
+        {boardAreas.map((area, index) => (
+          <React.Fragment key={index}>
+            <polygon points={area.points} fill="rgba(0, 0, 0, 0.1)" />
 
-      {/* Joke Category */}
-      {category && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <Chip
-            label={category}
-            color="primary"
-            sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }}
-          />
-        </Box>
-      )}
-    </Box>
+            {/* Text, Icon, and Category inside the polygon */}
+            <foreignObject x="170" y="220" width="268" height="180">
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  color: '#fff',
+                  textAlign: 'center',
+                  fontFamily: "'Caveat', cursive",
+                  wordWrap: 'break-word',
+                  overflow: 'auto',
+                  maxHeight: '100%',
+                  padding: '0.5rem',
+                  fontSize: '1rem',
+                  lineHeight: '1.5',
+                }}
+              >
+                {/* Joke Text */}
+                <div style={{ overflow: 'auto', maxHeight: '100%' }}>
+                  {joke || 'No joke available'}
+                </div>
+                {/* Chip (Category) */}
+                {category && (
+                  <Chip
+                    label={category}
+                    color="secondary"
+                    size="small"
+                    sx={{
+                      marginTop: '0.5rem',
+                      marginBottom: '0.5rem',
+                      fontFamily: "'Caveat', cursive",
+                      paddingX: '0.5rem',
+                    }}
+                  />
+                )}
+              </div>
+            </foreignObject>
+          </React.Fragment>
+        ))}
+      </svg>
+    </div>
   );
 };
 

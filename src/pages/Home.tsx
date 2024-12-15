@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchRandomJoke } from '../services/api';
-import BackgroundSection from '../components/BackgroundSection';
 import JokeSection from '../components/JokeSection';
 
 interface HomeProps {
@@ -46,9 +45,11 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
         padding: 0,
       }}
     >
-      <BackgroundSection>
-        <JokeSection joke={joke} iconUrl={iconUrl} category={category} />
-      </BackgroundSection>
+      <JokeSection
+        joke={joke || ''}
+        iconUrl={iconUrl || undefined}
+        category={category || undefined}
+      />
     </Container>
   );
 };
