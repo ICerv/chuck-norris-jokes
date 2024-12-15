@@ -1,17 +1,39 @@
 import React, { useEffect } from 'react';
 import { Typography, Box, Container, Chip } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
+import { setJoke } from '../redux/jokeSlice';
+import { fetchRandomJoke } from '../services/api';
 
 interface HomeProps {
   selectedCategory: string | null;
 }
 
 const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
+  const dispatch = useDispatch();
+
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
   const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
+  const category = useSelector((state: RootState) => state.joke.category);
 
-  useEffect(() => {}, [selectedCategory]);
+  useEffect(() => {
+    const loadJoke = async () => {
+      try {
+        const jokeData = await fetchRandomJoke();
+        dispatch(
+          setJoke({
+            joke: jokeData.joke,
+            iconUrl: jokeData.iconUrl,
+            category: jokeData.category,
+          }),
+        );
+      } catch (error) {
+        console.error('Failed to fetch joke:', error);
+      }
+    };
+
+    loadJoke();
+  }, [dispatch]);
 
   return (
     <Container
@@ -62,19 +84,20 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
           <Typography
             variant="h6"
             sx={{
+              fontFamily: "'Caveat', cursive",
               color: 'white',
-              fontSize: '1.2rem',
+              fontSize: '1.5rem',
               lineHeight: 1.5,
             }}
           >
             {joke || 'No joke available'}
           </Typography>
 
-          {/* Selected Category */}
-          {selectedCategory && (
+          {/* Joke Category */}
+          {category && (
             <Box sx={{ marginTop: '1rem' }}>
               <Chip
-                label={selectedCategory}
+                label={category}
                 color="primary"
                 sx={{ fontSize: '1rem' }}
               />

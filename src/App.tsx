@@ -11,16 +11,18 @@ import {
   TextField,
   Box,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -40,7 +42,18 @@ const App: React.FC = () => {
     try {
       setSelectedCategory(category);
       const jokeData = await fetchJokeByQuery(category);
-      dispatch(setJoke({ joke: jokeData.joke, iconUrl: jokeData.iconUrl }));
+
+      if (jokeData.error) {
+        setErrorMessage(jokeData.error);
+      } else {
+        dispatch(
+          setJoke({
+            joke: jokeData.joke || 'No joke available.',
+            iconUrl: jokeData.iconUrl || '',
+            category: jokeData.category || null,
+          }),
+        );
+      }
       setAnchorEl(null);
     } catch (error) {
       console.error('Error fetching joke:', error);
@@ -53,7 +66,18 @@ const App: React.FC = () => {
     setErrorMessage('');
     try {
       const jokeData = await fetchJokeByQuery(searchQuery);
-      dispatch(setJoke({ joke: jokeData.joke, iconUrl: jokeData.iconUrl }));
+
+      if (jokeData.error) {
+        setErrorMessage(jokeData.error);
+      } else {
+        dispatch(
+          setJoke({
+            joke: jokeData.joke || 'No joke available.',
+            iconUrl: jokeData.iconUrl || '',
+            category: jokeData.category || null,
+          }),
+        );
+      }
     } catch (error) {
       console.error('Error fetching joke:', error);
       setErrorMessage('Failed to fetch jokes.');
@@ -71,14 +95,14 @@ const App: React.FC = () => {
             backgroundColor: '#f5f5f5',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-start',
           }}
         >
           {/* Logo */}
           <span style={{ fontWeight: 'bold' }}>Chuck Norris Jokes</span>
 
           {/* Search Bar */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
             <TextField
               size="small"
               label="Search Jokes"
@@ -86,6 +110,21 @@ const App: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               sx={{ minWidth: '400px' }}
+              error={!!errorMessage}
+              helperText={errorMessage || ''}
+              slotProps={{
+                input: {
+                  endAdornment: searchQuery && (
+                    <IconButton
+                      onClick={() => setSearchQuery('')}
+                      size="small"
+                      aria-label="clear"
+                    >
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  ),
+                },
+              }}
             />
             <Button
               variant="contained"
@@ -105,7 +144,11 @@ const App: React.FC = () => {
           <Button
             aria-controls="category-menu"
             aria-haspopup="true"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
+            onClick={(e) => {
+              setSearchQuery('');
+              setErrorMessage('');
+              setAnchorEl(e.currentTarget);
+            }}
             style={{ textTransform: 'none' }}
           >
             Categories
@@ -129,12 +172,6 @@ const App: React.FC = () => {
         </nav>
 
         <Home selectedCategory={selectedCategory} />
-
-        {errorMessage && (
-          <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>
-            {errorMessage}
-          </p>
-        )}
       </div>
     </Router>
   );

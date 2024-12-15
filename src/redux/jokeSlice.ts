@@ -1,22 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface JokeState {
-  currentJoke: string | null;
+  currentJoke: string;
   iconUrl: string | null;
+  category: string | null;
 }
 
 const initialState: JokeState = {
-  currentJoke: null,
+  currentJoke: '',
   iconUrl: null,
+  category: null,
 };
 
 const jokeSlice = createSlice({
   name: 'joke',
   initialState,
   reducers: {
-    setJoke(state, action: PayloadAction<{ joke: string; iconUrl: string }>) {
+    setJoke(
+      state,
+      action: PayloadAction<{
+        joke: string;
+        iconUrl: string | null;
+        category: string | null;
+      }>,
+    ) {
       state.currentJoke = action.payload.joke;
       state.iconUrl = action.payload.iconUrl;
+      state.category = action.payload.category;
     },
   },
 });
