@@ -14,7 +14,7 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
   const dispatch = useDispatch();
 
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
-  const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
+  // const iconUrl = useSelector((state: RootState) => state.joke.iconUrl);
   const category = useSelector((state: RootState) => state.joke.category);
 
   useEffect(() => {
@@ -45,11 +45,7 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
         padding: 0,
       }}
     >
-      <JokeSection
-        joke={joke || ''}
-        iconUrl={iconUrl || undefined}
-        category={category || undefined}
-      />
+      <JokeSection joke={joke || ''} category={category || undefined} />
     </Container>
   );
 };

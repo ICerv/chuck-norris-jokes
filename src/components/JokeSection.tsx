@@ -44,7 +44,7 @@ const JokeSection: React.FC<JokeSectionProps> = ({
       >
         {boardAreas.map((area, index) => (
           <React.Fragment key={index}>
-            <polygon points={area.points} fill="rgba(0, 0, 0, 0.1)" />
+            <polygon points={area.points} fill="transparent" />
 
             {/* Text, Icon, and Category inside the polygon */}
             <foreignObject x="170" y="220" width="268" height="180">
