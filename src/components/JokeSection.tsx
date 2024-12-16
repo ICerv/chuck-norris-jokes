@@ -49,33 +49,40 @@ const JokeSection: React.FC<JokeSectionProps> = ({
           <React.Fragment key={index}>
             <polygon points={area.points} fill="transparent" />
 
-            {/* Text, Icon, and Category inside the polygon */}
-            <foreignObject x="170" y="220" width="268" height="180">
+            {/* SVG Polygon and Content */}
+            <foreignObject x="170" y="210" width="265" height="185">
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
+                  position: 'relative',
+                  display: 'block',
                   color: '#fff',
                   textAlign: 'center',
                   fontFamily: "'Caveat', cursive",
                   wordWrap: 'break-word',
-                  overflow: 'auto',
-                  maxHeight: '100%',
-                  padding: '0.5rem',
-                  fontSize: '1rem',
-                  lineHeight: '1.5',
+                  height: '100%',
+                  padding: '1rem 0 2rem',
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Joke Text */}
-                <div style={{ overflow: 'auto', maxHeight: '100%' }}>
+                {/* Scroll text */}
+                <div
+                  style={{
+                    overflowY: 'auto',
+                    height: '100%',
+                  }}
+                >
                   {joke || 'No joke available'}
                 </div>
 
+                {/* Chip and Arrow */}
                 {joke && !joke.includes('No joke available') && (
                   <div
                     style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '8px',
@@ -87,14 +94,11 @@ const JokeSection: React.FC<JokeSectionProps> = ({
                         color="secondary"
                         size="small"
                         sx={{
-                          marginTop: '0.5rem',
-                          marginBottom: '0.5rem',
                           fontFamily: "'Caveat', cursive",
                           paddingX: '0.5rem',
                         }}
                       />
                     )}
-                    {/* Right Arrow */}
                     <ArrowForwardIosIcon
                       fontSize="small"
                       onClick={onNextCategory}
