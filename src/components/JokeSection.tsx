@@ -72,30 +72,36 @@ const JokeSection: React.FC<JokeSectionProps> = ({
                 <div style={{ overflow: 'auto', maxHeight: '100%' }}>
                   {joke || 'No joke available'}
                 </div>
-                {/* Chip with Arrow Button */}
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  {category && (
-                    <Chip
-                      label={category}
-                      color="secondary"
-                      size="small"
-                      sx={{
-                        marginTop: '0.5rem',
-                        marginBottom: '0.5rem',
-                        fontFamily: "'Caveat', cursive",
-                        paddingX: '0.5rem',
-                      }}
+
+                {joke && !joke.includes('No joke available') && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    {category && (
+                      <Chip
+                        label={category}
+                        color="secondary"
+                        size="small"
+                        sx={{
+                          marginTop: '0.5rem',
+                          marginBottom: '0.5rem',
+                          fontFamily: "'Caveat', cursive",
+                          paddingX: '0.5rem',
+                        }}
+                      />
+                    )}
+                    {/* Right Arrow */}
+                    <ArrowForwardIosIcon
+                      fontSize="small"
+                      onClick={onNextCategory}
+                      style={{ cursor: 'pointer' }}
                     />
-                  )}
-                  {/* Right Arrow */}
-                  <ArrowForwardIosIcon
-                    fontSize="small"
-                    onClick={onNextCategory}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </div>
+                  </div>
+                )}
               </div>
             </foreignObject>
           </React.Fragment>

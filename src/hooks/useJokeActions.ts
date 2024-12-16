@@ -51,7 +51,7 @@ const useJokeActions = () => {
     try {
       const jokeData = await fetchJokeByQuery(query);
       const mappedJoke: Joke = {
-        joke: jokeData.joke || 'No joke available',
+        joke: jokeData.joke || `No joke available for ${query}`,
         iconUrl: jokeData.iconUrl || null,
         category: jokeData.category || null,
       };

@@ -15,25 +15,7 @@ code {
     monospace;
 }
 
-
-/* Scrollbar for Chrome, Safari, Edge */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #6a1b9a;
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-
-/* Scrollbar for Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #6a1b9a transparent;
+  scrollbar-color: #fff transparent;
 }
