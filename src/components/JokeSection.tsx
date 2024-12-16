@@ -3,19 +3,20 @@ import React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useMediaQuery } from '@mui/material';
 import theme from '../theme';
+import FadeAnimation from './FadeAnimation';
 
 interface JokeSectionProps {
   joke: string;
-  iconUrl?: string;
   category?: string;
   onNextCategory: () => void;
+  isVisible: boolean;
 }
 
 const JokeSection: React.FC<JokeSectionProps> = ({
   joke,
-  iconUrl,
   category,
   onNextCategory,
+  isVisible,
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -28,7 +29,7 @@ const JokeSection: React.FC<JokeSectionProps> = ({
         overflow: 'hidden',
       }}
     >
-      {/* Background Image  */}
+      {/* Background Image */}
       <img
         src="/images/chuck_norris_desktop.png"
         alt="Chuck Norris Board"
@@ -66,17 +67,9 @@ const JokeSection: React.FC<JokeSectionProps> = ({
             }}
           >
             {/* Scroll text */}
-            <div
-              style={{
-                overflowY: 'auto',
-                height: '100%',
-                paddingRight: '1rem',
-                boxSizing: 'content-box',
-                paddingLeft: '1rem',
-              }}
-            >
+            <FadeAnimation isVisible={isVisible}>
               {joke || 'No joke available'}
-            </div>
+            </FadeAnimation>
 
             {/* Chip and Arrow */}
             {joke && !joke.includes('No joke available') && (

@@ -16,24 +16,28 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
   const category = useSelector((state: RootState) => state.joke.category);
 
   const [currentJoke, setCurrentJoke] = useState<string>(joke || '');
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   useEffect(() => {
     const loadJoke = async () => {
       try {
+        setIsVisible(false);
         const jokeData = selectedCategory
           ? await fetchJokeByCategory(selectedCategory)
           : await fetchRandomJoke();
 
-        setCurrentJoke(jokeData.joke);
-
-        dispatch(
-          setJoke({
-            joke: jokeData.joke,
-            iconUrl: jokeData.iconUrl,
-            category: selectedCategory || jokeData.category || 'Unknown',
-          }),
-        );
+        setTimeout(() => {
+          setCurrentJoke(jokeData.joke);
+          dispatch(
+            setJoke({
+              joke: jokeData.joke,
+              iconUrl: jokeData.iconUrl,
+              category: selectedCategory || jokeData.category || 'Unknown',
+            }),
+          );
+          setIsVisible(true);
+        }, 300);
       } catch (error) {
         console.error('Failed to fetch joke:', error);
       }
@@ -44,7 +48,11 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
 
   useEffect(() => {
     if (joke) {
-      setCurrentJoke(joke);
+      setIsVisible(false);
+      setTimeout(() => {
+        setCurrentJoke(joke);
+        setIsVisible(true);
+      }, 300);
     }
   }, [joke]);
 
@@ -55,6 +63,7 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
       joke={currentJoke}
       category={category || 'Random'}
       onNextCategory={handleNextJoke}
+      isVisible={isVisible}
     />
   );
 };
