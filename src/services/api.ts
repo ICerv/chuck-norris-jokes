@@ -46,12 +46,13 @@ export const fetchJokeCategories = async (): Promise<string[]> => {
 
 export const fetchJokeByCategory = async (
   category: string,
-): Promise<{ joke: string; iconUrl: string }> => {
+): Promise<{ joke: string; iconUrl: string; category: string }> => {
   const response = await axios.get(`${API_BASE}/jokes/random`, {
     params: { category },
   });
   return {
     joke: response.data.value,
     iconUrl: response.data.icon_url,
+    category,
   };
 };
