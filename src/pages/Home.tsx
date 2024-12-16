@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchJokeByCategory, fetchRandomJoke } from '../services/api';
@@ -52,20 +51,11 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
   const handleNextJoke = () => setCurrentIndex((prev) => prev + 1);
 
   return (
-    <Container
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        height: '100vh',
-        padding: 0,
-      }}
-    >
-      <JokeSection
-        joke={currentJoke}
-        category={category || 'Random'}
-        onNextCategory={handleNextJoke}
-      />
-    </Container>
+    <JokeSection
+      joke={currentJoke}
+      category={category || 'Random'}
+      onNextCategory={handleNextJoke}
+    />
   );
 };
 
