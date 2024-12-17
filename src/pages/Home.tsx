@@ -7,9 +7,15 @@ import { RootState } from '../redux/store';
 
 interface HomeProps {
   selectedCategory: string | null;
+  searchQuery: string;
+  onSearch: (query: string) => void;
 }
 
-const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
+const Home: React.FC<HomeProps> = ({
+  selectedCategory,
+  searchQuery,
+  onSearch,
+}) => {
   const dispatch = useDispatch();
 
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
@@ -29,11 +35,16 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
 
         setTimeout(() => {
           setCurrentJoke(jokeData.joke);
+          const jokeCategory =
+            jokeData.category && jokeData.category.length > 0
+              ? jokeData.category
+              : selectedCategory || 'Unknown';
+
           dispatch(
             setJoke({
               joke: jokeData.joke,
               iconUrl: jokeData.iconUrl,
-              category: selectedCategory || jokeData.category || 'Unknown',
+              category: jokeCategory,
             }),
           );
           setIsVisible(true);
@@ -56,12 +67,20 @@ const Home: React.FC<HomeProps> = ({ selectedCategory }) => {
     }
   }, [joke]);
 
-  const handleNextJoke = () => setCurrentIndex((prev) => prev + 1);
+  const handleNextJoke = () => {
+    if (searchQuery.trim()) {
+      onSearch(searchQuery);
+    } else {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
 
   return (
     <JokeSection
       joke={currentJoke}
       category={category || 'Random'}
+      searchQuery={searchQuery}
+      onSearch={onSearch}
       onNextCategory={handleNextJoke}
       isVisible={isVisible}
     />

@@ -9,6 +9,8 @@ interface JokeSectionProps {
   joke: string;
   category?: string;
   onNextCategory: () => void;
+  searchQuery: string;
+  onSearch: (query: string) => void;
   isVisible: boolean;
 }
 
@@ -16,9 +18,19 @@ const JokeSection: React.FC<JokeSectionProps> = ({
   joke,
   category,
   onNextCategory,
+  searchQuery,
+  onSearch,
   isVisible,
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const handleArrowClick = () => {
+    if (searchQuery.trim()) {
+      onSearch(searchQuery);
+    } else {
+      onNextCategory();
+    }
+  };
 
   return (
     <div
@@ -97,7 +109,7 @@ const JokeSection: React.FC<JokeSectionProps> = ({
                 )}
                 <ArrowForwardIosIcon
                   fontSize="small"
-                  onClick={onNextCategory}
+                  onClick={handleArrowClick}
                   style={{ cursor: 'pointer' }}
                 />
               </div>

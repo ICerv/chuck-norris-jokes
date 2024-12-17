@@ -60,7 +60,11 @@ const App: React.FC = () => {
         <Box
           style={{ flex: '1 0 auto', display: 'flex', alignItems: 'center' }}
         >
-          <Home selectedCategory={selectedCategory} />
+          <Home
+            selectedCategory={selectedCategory}
+            searchQuery={searchQuery}
+            onSearch={handleSearch}
+          />
         </Box>
         <Footer />
       </Box>

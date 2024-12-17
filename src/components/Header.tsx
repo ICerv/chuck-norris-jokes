@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -37,6 +37,8 @@ const Header: React.FC<HeaderProps> = ({
   onRandomJokeClick,
   onClearError,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme: Theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -78,10 +80,14 @@ const Header: React.FC<HeaderProps> = ({
                   label="Search Jokes"
                   variant="outlined"
                   value={searchQuery}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
                   onChange={(e) => {
-                    onSearchQueryChange(e.target.value);
-                    if (e.target.value.trim() === '') {
-                      onClearError();
+                    if (e.target.value.length <= 20) {
+                      onSearchQueryChange(e.target.value);
+                      if (e.target.value.trim() === '') {
+                        onClearError();
+                      }
                     }
                   }}
                   onKeyDown={(e) => {
@@ -91,7 +97,12 @@ const Header: React.FC<HeaderProps> = ({
                     }
                   }}
                   error={!!errorMessage}
-                  helperText={errorMessage || ''}
+                  helperText={
+                    errorMessage ||
+                    (isFocused
+                      ? `You can enter up to 20 characters   (${searchQuery.length}/20)`
+                      : '')
+                  }
                   fullWidth
                   slotProps={{
                     input: {
@@ -107,6 +118,9 @@ const Header: React.FC<HeaderProps> = ({
                           <CloseIcon fontSize="small" />
                         </IconButton>
                       ),
+                    },
+                    htmlInput: {
+                      maxLength: 20,
                     },
                   }}
                 />
