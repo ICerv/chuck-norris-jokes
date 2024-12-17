@@ -43,7 +43,8 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleSearch = useCallback(() => {
     onSearch();
-  }, [onSearch]);
+    onSearchQueryChange('');
+  }, [onSearch, onSearchQueryChange]);
 
   return (
     <Box
