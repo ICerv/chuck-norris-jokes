@@ -95,6 +95,7 @@ const useJokeActions = () => {
     handleSearch,
     loading,
     errorMessage,
+    setErrorMessage,
   };
 };
 

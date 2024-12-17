@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ interface HeaderProps {
   loading: boolean;
   errorMessage: string;
   onRandomJokeClick: () => void;
+  onClearError: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   loading,
   errorMessage,
   onRandomJokeClick,
+  onClearError,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme: Theme = useTheme();
@@ -42,12 +44,6 @@ const Header: React.FC<HeaderProps> = ({
   const openMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
   const closeMenu = () => setAnchorEl(null);
-
-  const handleSearch = useCallback(() => {
-    if (searchQuery.trim() === '') return;
-    onSearch();
-    onSearchQueryChange('');
-  }, [onSearch, onSearchQueryChange, searchQuery]);
 
   return (
     <Box
@@ -82,11 +78,16 @@ const Header: React.FC<HeaderProps> = ({
                   label="Search Jokes"
                   variant="outlined"
                   value={searchQuery}
-                  onChange={(e) => onSearchQueryChange(e.target.value)}
+                  onChange={(e) => {
+                    onSearchQueryChange(e.target.value);
+                    if (e.target.value.trim() === '') {
+                      onClearError();
+                    }
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      handleSearch();
+                      if (searchQuery.trim()) onSearch();
                     }
                   }}
                   error={!!errorMessage}
@@ -96,7 +97,10 @@ const Header: React.FC<HeaderProps> = ({
                     input: {
                       endAdornment: searchQuery && (
                         <IconButton
-                          onClick={() => onSearchQueryChange('')}
+                          onClick={() => {
+                            onSearchQueryChange('');
+                            onClearError();
+                          }}
                           size="small"
                           aria-label="clear"
                         >
@@ -107,10 +111,9 @@ const Header: React.FC<HeaderProps> = ({
                   }}
                 />
                 <Button
-                  type="button"
                   variant="contained"
                   color="secondary"
-                  onClick={handleSearch}
+                  onClick={onSearch}
                   disabled={loading}
                   sx={{
                     width: '100px',
@@ -254,7 +257,9 @@ const Header: React.FC<HeaderProps> = ({
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={handleSearch}
+                  onClick={() => {
+                    if (searchQuery.trim()) onSearch();
+                  }}
                   disabled={loading}
                 >
                   {loading ? (

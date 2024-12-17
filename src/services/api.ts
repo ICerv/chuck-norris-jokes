@@ -35,7 +35,7 @@ export const fetchJokeByQuery = async (query: string) => {
   return {
     joke: selectedJoke.value,
     iconUrl: selectedJoke.icon_url,
-    category: query,
+    category: selectedJoke.categories?.[0] || 'Random',
   };
 };
 

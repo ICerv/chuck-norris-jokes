@@ -13,6 +13,7 @@ const App: React.FC = () => {
     handleSearch,
     loading,
     errorMessage,
+    setErrorMessage,
   } = useJokeActions();
 
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -27,6 +28,10 @@ const App: React.FC = () => {
     setSearchQuery('');
     setSelectedCategory(null);
     handleCategoryClick('random');
+  };
+
+  const clearErrorMessage = () => {
+    setErrorMessage('');
   };
 
   return (
@@ -49,6 +54,7 @@ const App: React.FC = () => {
           loading={loading}
           errorMessage={errorMessage}
           onRandomJokeClick={handleRandomJoke}
+          onClearError={clearErrorMessage}
         />
 
         <Box
