@@ -23,6 +23,11 @@ const App: React.FC = () => {
     handleCategoryClick(category);
   };
 
+  const handleRandomJoke = () => {
+    setSelectedCategory(null);
+    handleCategoryClick('');
+  };
+
   return (
     <Router>
       <Box
@@ -42,6 +47,7 @@ const App: React.FC = () => {
           onSearchQueryChange={setSearchQuery}
           loading={loading}
           errorMessage={errorMessage}
+          onRandomJokeClick={handleRandomJoke}
         />
 
         <Box

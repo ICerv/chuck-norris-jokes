@@ -22,6 +22,7 @@ interface HeaderProps {
   onSearchQueryChange: (query: string) => void;
   loading: boolean;
   errorMessage: string;
+  onRandomJokeClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -32,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({
   onSearchQueryChange,
   loading,
   errorMessage,
+  onRandomJokeClick,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme: Theme = useTheme();
@@ -196,6 +198,26 @@ const Header: React.FC<HeaderProps> = ({
                     </MenuItem>
                   ))}
                 </Box>
+                <MenuItem
+                  onClick={() => {
+                    onRandomJokeClick();
+                    closeMenu();
+                  }}
+                  sx={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    justifyContent: 'center',
+                    marginTop: '1rem',
+                    borderRadius: '8px',
+                    backgroundColor: theme.palette.secondary.main,
+                    color: theme.palette.common.white,
+                    '&:hover': {
+                      backgroundColor: theme.palette.secondary.dark,
+                    },
+                  }}
+                >
+                  Random
+                </MenuItem>
               </Menu>
             </Box>
           ) : (
@@ -303,6 +325,26 @@ const Header: React.FC<HeaderProps> = ({
                     </MenuItem>
                   ))}
                 </Box>
+                <MenuItem
+                  onClick={() => {
+                    onRandomJokeClick();
+                    closeMenu();
+                  }}
+                  sx={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    justifyContent: 'center',
+                    marginTop: '1rem',
+                    borderRadius: '8px',
+                    backgroundColor: theme.palette.secondary.main,
+                    color: theme.palette.common.white,
+                    '&:hover': {
+                      backgroundColor: theme.palette.secondary.dark,
+                    },
+                  }}
+                >
+                  Random
+                </MenuItem>
               </Menu>
             </Box>
           )}
