@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Box,
   Button,
@@ -41,6 +41,10 @@ const Header: React.FC<HeaderProps> = ({
     setAnchorEl(event.currentTarget);
   const closeMenu = () => setAnchorEl(null);
 
+  const handleSearch = useCallback(() => {
+    onSearch();
+  }, [onSearch]);
+
   return (
     <Box
       sx={{
@@ -61,13 +65,26 @@ const Header: React.FC<HeaderProps> = ({
               <Box fontWeight="bold" fontSize="1.2rem">
                 Chuck Norris Jokes
               </Box>
-              <Box display="flex" alignItems="center" gap="1rem">
+              <Box
+                component="form"
+                noValidate
+                onSubmit={(e) => e.preventDefault()}
+                display="flex"
+                alignItems="center"
+                gap="1rem"
+              >
                 <TextField
                   size="small"
                   label="Search Jokes"
                   variant="outlined"
                   value={searchQuery}
                   onChange={(e) => onSearchQueryChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSearch();
+                    }
+                  }}
                   error={!!errorMessage}
                   helperText={errorMessage || ''}
                   fullWidth
@@ -86,10 +103,28 @@ const Header: React.FC<HeaderProps> = ({
                   }}
                 />
                 <Button
+                  type="button"
                   variant="contained"
                   color="secondary"
-                  onClick={onSearch}
+                  onClick={handleSearch}
                   disabled={loading}
+                  sx={{
+                    width: '100px',
+                    transition:
+                      'background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease',
+
+                    '&:hover': {
+                      backgroundColor: '#6d1b7b',
+                    },
+                    '&:active': {
+                      backgroundColor: '#4a0e52',
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#ccc',
+                      opacity: 0.7,
+                      cursor: 'not-allowed',
+                    },
+                  }}
                 >
                   {loading ? (
                     <CircularProgress size={20} color="inherit" />
@@ -195,7 +230,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={onSearch}
+                  onClick={handleSearch}
                   disabled={loading}
                 >
                   {loading ? (
