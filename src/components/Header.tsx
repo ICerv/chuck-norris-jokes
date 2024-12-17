@@ -44,9 +44,10 @@ const Header: React.FC<HeaderProps> = ({
   const closeMenu = () => setAnchorEl(null);
 
   const handleSearch = useCallback(() => {
+    if (searchQuery.trim() === '') return;
     onSearch();
     onSearchQueryChange('');
-  }, [onSearch, onSearchQueryChange]);
+  }, [onSearch, onSearchQueryChange, searchQuery]);
 
   return (
     <Box
