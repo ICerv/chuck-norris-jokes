@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({
                 noValidate
                 onSubmit={(e) => e.preventDefault()}
                 display="flex"
-                alignItems="center"
+                alignItems="flex-start"
                 gap="1rem"
               >
                 <TextField
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
                       handleSearch();
                     }
                   }}
-                  error={!!errorMessage}
+                  // error={!!errorMessage}
                   helperText={errorMessage || ''}
                   fullWidth
                   slotProps={{
