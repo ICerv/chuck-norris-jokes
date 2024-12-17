@@ -89,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({
                       handleSearch();
                     }
                   }}
-                  // error={!!errorMessage}
+                  error={!!errorMessage}
                   helperText={errorMessage || ''}
                   fullWidth
                   slotProps={{

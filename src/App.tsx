@@ -24,8 +24,9 @@ const App: React.FC = () => {
   };
 
   const handleRandomJoke = () => {
+    setSearchQuery('');
     setSelectedCategory(null);
-    handleCategoryClick('');
+    handleCategoryClick('random');
   };
 
   return (
