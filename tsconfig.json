@@ -15,7 +15,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom"],
+    "baseUrl": "./src",
+    "paths": {
+      "services/*": ["services/*"],
+      "components/*": ["components/*"],
+      "hooks/*": ["hooks/*"],
+      "redux/*": ["redux/*"]
+    }
   },
   "include": ["src"]
 }

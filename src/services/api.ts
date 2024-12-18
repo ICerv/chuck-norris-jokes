@@ -1,58 +1,95 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 
-const API_BASE = 'https://api.chucknorris.io';
+interface JokeResponse {
+  value: string;
+  icon_url: string;
+  categories?: string[];
+}
 
-export const fetchRandomJoke = async () => {
-  const categoriesResponse = await axios.get(`${API_BASE}/jokes/categories`);
-  const categories = categoriesResponse.data;
+interface JokeResult {
+  joke: string;
+  iconUrl: string | null;
+  category: string | null;
+}
 
-  const randomCategory =
-    categories[Math.floor(Math.random() * categories.length)];
+export const fetchRandomJoke = async (): Promise<JokeResult> => {
+  try {
+    const categoriesResponse =
+      await apiClient.get<string[]>('/jokes/categories');
+    const categories = categoriesResponse.data;
 
-  const response = await axios.get(`${API_BASE}/jokes/random`, {
-    params: { category: randomCategory },
-  });
+    const randomCategory =
+      categories[Math.floor(Math.random() * categories.length)];
 
-  return {
-    joke: response.data.value,
-    iconUrl: response.data.icon_url,
-    category: randomCategory,
-  };
+    const response = await apiClient.get<JokeResponse>('/jokes/random', {
+      params: { category: randomCategory },
+    });
+
+    return {
+      joke: response.data.value,
+      iconUrl: response.data.icon_url,
+      category: randomCategory,
+    };
+  } catch (error) {
+    console.error('Error fetching random joke:', error);
+    throw new Error('Failed to fetch a random joke. Please try again.');
+  }
 };
 
-export const fetchJokeByQuery = async (query: string) => {
-  const response = await axios.get(`${API_BASE}/jokes/search`, {
-    params: { query },
-  });
+export const fetchJokeByQuery = async (query: string): Promise<JokeResult> => {
+  try {
+    const response = await apiClient.get<{
+      total: number;
+      result: JokeResponse[];
+    }>('/jokes/search', { params: { query } });
 
-  if (response.data.total === 0) {
-    return { error: 'No jokes found for the given query.' };
+    if (response.data.result.length === 0) {
+      return {
+        joke: 'No jokes found for the given query.',
+        iconUrl: null,
+        category: query,
+      };
+    }
+
+    const randomIndex = Math.floor(Math.random() * response.data.result.length);
+    const selectedJoke = response.data.result[randomIndex];
+
+    return {
+      joke: selectedJoke.value,
+      iconUrl: selectedJoke.icon_url,
+      category: query,
+    };
+  } catch (error) {
+    console.error('Error fetching joke by query:', error);
+    throw new Error('Failed to fetch jokes for the given query.');
   }
-
-  const randomIndex = Math.floor(Math.random() * response.data.result.length);
-  const selectedJoke = response.data.result[randomIndex];
-
-  return {
-    joke: selectedJoke.value,
-    iconUrl: selectedJoke.icon_url,
-    category: query ? `"${query}"` : 'Unknown',
-  };
 };
 
 export const fetchJokeCategories = async (): Promise<string[]> => {
-  const response = await axios.get(`${API_BASE}/jokes/categories`);
-  return response.data;
+  try {
+    const response = await apiClient.get<string[]>('/jokes/categories');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching joke categories:', error);
+    throw new Error('Failed to fetch joke categories.');
+  }
 };
 
 export const fetchJokeByCategory = async (
   category: string,
-): Promise<{ joke: string; iconUrl: string; category: string }> => {
-  const response = await axios.get(`${API_BASE}/jokes/random`, {
-    params: { category },
-  });
-  return {
-    joke: response.data.value,
-    iconUrl: response.data.icon_url,
-    category,
-  };
+): Promise<JokeResult> => {
+  try {
+    const response = await apiClient.get<JokeResponse>('/jokes/random', {
+      params: { category },
+    });
+
+    return {
+      joke: response.data.value,
+      iconUrl: response.data.icon_url,
+      category,
+    };
+  } catch (error) {
+    console.error('Error fetching joke by category:', error);
+    throw new Error('Failed to fetch joke by category.');
+  }
 };
