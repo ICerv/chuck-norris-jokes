@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchJokeByCategory, fetchRandomJoke } from '../services/api';
-import JokeSection from '../components/JokeSection';
+import JokeSection from '../components/JokeSection/JokeSection';
 import { RootState } from '../redux/store';
 
 interface HomeProps {
