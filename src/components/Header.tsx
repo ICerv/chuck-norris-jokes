@@ -13,6 +13,7 @@ import {
   Container,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface HeaderProps {
   categories: string[];
@@ -125,33 +126,24 @@ const Header: React.FC<HeaderProps> = ({
                   }}
                 />
                 <Button
+                  type="button"
                   variant="contained"
                   color="secondary"
+                  disableRipple
+                  startIcon={<SearchIcon />}
                   onClick={onSearch}
                   disabled={loading}
                   sx={{
-                    width: '100px',
-                    transition:
-                      'background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease',
-
+                    borderRadius: '25px',
+                    padding: '0.5rem 2rem',
+                    letterSpacing: '0.05rem',
+                    transition: 'all 0.3s ease',
                     '&:hover': {
-                      backgroundColor: '#6d1b7b',
-                    },
-                    '&:active': {
-                      backgroundColor: '#4a0e52',
-                    },
-                    '&:disabled': {
-                      backgroundColor: '#ccc',
-                      opacity: 0.7,
-                      cursor: 'not-allowed',
+                      backgroundColor: theme.palette.secondary.dark,
                     },
                   }}
                 >
-                  {loading ? (
-                    <CircularProgress size={20} color="inherit" />
-                  ) : (
-                    'Search'
-                  )}
+                  Search
                 </Button>
               </Box>
               <Button

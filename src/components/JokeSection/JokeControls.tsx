@@ -7,6 +7,7 @@ import {
   Theme,
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import theme from 'theme';
 
 interface JokeControlsProps {
   category?: string;
@@ -28,21 +29,28 @@ const JokeControls: React.FC<JokeControlsProps> = ({
       {category && (
         <Chip
           label={category}
-          color="primary"
-          size={chipSize}
           sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: 'white',
             fontFamily: "'Caveat', cursive",
-            width: 80,
+            border: isMobile ? '1px solid white' : 'none',
+            width: 70,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             '& .MuiChip-label': {
               fontSize: isMobile ? '1.2rem' : '1rem',
             },
           }}
+          size={chipSize}
         />
       )}
       <IconButton
-        onClick={handleArrowClick}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleArrowClick();
+        }}
+        disableRipple
         size="small"
         sx={{
           color: 'white',
