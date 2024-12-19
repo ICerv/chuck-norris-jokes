@@ -33,8 +33,7 @@ const JokeControls: React.FC<JokeControlsProps> = ({
             backgroundColor: theme.palette.secondary.main,
             color: 'white',
             fontFamily: "'Caveat', cursive",
-            border: isMobile ? '1px solid white' : 'none',
-            width: 70,
+            width: 'fit-content',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             '& .MuiChip-label': {
@@ -53,7 +52,13 @@ const JokeControls: React.FC<JokeControlsProps> = ({
         disableRipple
         size="small"
         sx={{
-          color: 'white',
+          color: isMobile ? theme.palette.secondary.main : 'white',
+          '&:hover': {
+            color: isMobile
+              ? theme.palette.primary.dark
+              : theme.palette.secondary.main,
+            transition: 'color 0.3s',
+          },
         }}
         aria-label="Next joke or category"
       >

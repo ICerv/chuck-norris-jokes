@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import FadeAnimation from './FadeAnimation';
 import JokeControls from './JokeControls';
+import theme from 'theme';
 
 interface JokeMobileViewProps {
   joke: string;
@@ -21,24 +22,28 @@ const JokeMobileView: React.FC<JokeMobileViewProps> = ({
       sx={{
         maxWidth: 300,
         minHeight: 200,
-        backgroundColor: 'secondary.main',
-        color: 'white',
+        backgroundColor: theme.palette.background.default,
+        color: 'text.primary',
         textAlign: 'center',
-        boxShadow: 3,
-        p: 2,
+        boxShadow: theme.shadows[3],
+        border: `1px solid ${theme.colors.border}`,
+        p: 3,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         borderRadius: 2,
       }}
     >
-      <CardContent>
+      <CardContent
+        sx={{
+          padding: '0px',
+        }}
+      >
         <FadeAnimation isVisible={isVisible}>
           <Typography
             variant="h5"
             sx={{
               fontFamily: "'Caveat', cursive",
-              mb: 2,
               overflow: 'hidden',
             }}
           >
