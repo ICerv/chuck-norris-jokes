@@ -14,16 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-      {(bootstrapped) => {
-        if (!bootstrapped) {
-          return <div>Failed to rehydrate state. Please refresh.</div>;
-        }
-        return (
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
-        );
-      }}
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </PersistGate>
   </Provider>,
 );

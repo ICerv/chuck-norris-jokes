@@ -57,7 +57,7 @@ export const fetchJokeByQuery = async (query: string): Promise<JokeResult> => {
     return {
       joke: selectedJoke.value,
       iconUrl: selectedJoke.icon_url,
-      category: query ? `"${query}"` : 'Unknown',
+      category: query,
     };
   } catch (error) {
     console.error('Error fetching joke by query:', error);
