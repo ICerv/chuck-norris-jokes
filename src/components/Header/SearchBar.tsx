@@ -56,6 +56,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
         label="Search Jokes"
         variant="outlined"
         value={searchQuery}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(e) => {

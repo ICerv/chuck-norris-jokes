@@ -16,8 +16,6 @@ const JokeSection: React.FC<JokeSectionProps> = ({
   joke,
   category,
   onNextCategoryOrQuery,
-
-  isVisible,
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -38,14 +36,12 @@ const JokeSection: React.FC<JokeSectionProps> = ({
           joke={joke}
           category={category}
           handleArrowClick={onNextCategoryOrQuery}
-          isVisible={isVisible}
         />
       ) : (
         <JokeMobileView
           joke={joke}
           category={category}
           handleArrowClick={onNextCategoryOrQuery}
-          isVisible={isVisible}
         />
       )}
     </Box>

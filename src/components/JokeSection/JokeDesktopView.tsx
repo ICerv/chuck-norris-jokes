@@ -1,20 +1,18 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import FadeAnimation from './FadeAnimation';
 import JokeControls from './JokeControls';
+import FadeAnimation from './FadeAnimation';
 
 interface JokeDesktopViewProps {
   joke: string;
   category?: string;
   handleArrowClick: () => void;
-  isVisible: boolean;
 }
 
 const JokeDesktopView: React.FC<JokeDesktopViewProps> = ({
   joke,
   category,
   handleArrowClick,
-  isVisible,
 }) => {
   return (
     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -44,7 +42,7 @@ const JokeDesktopView: React.FC<JokeDesktopViewProps> = ({
           <Box
             sx={{
               display: 'block',
-              color: '#fff',
+              color: 'white',
               textAlign: 'center',
               fontFamily: "'Caveat', cursive",
               wordWrap: 'break-word',
@@ -55,17 +53,24 @@ const JokeDesktopView: React.FC<JokeDesktopViewProps> = ({
               position: 'relative',
             }}
           >
-            <FadeAnimation isVisible={isVisible}>
-              <Typography
-                variant="body1"
-                sx={{
-                  fontFamily: "'Caveat', cursive",
-                  color: 'white',
-                }}
-              >
-                {joke || 'No joke available'}
-              </Typography>
-            </FadeAnimation>
+            <div
+              style={{
+                overflowY: 'auto',
+                maxHeight: '100%',
+              }}
+            >
+              <FadeAnimation keyProp={joke}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: "'Caveat', cursive",
+                    color: 'white',
+                  }}
+                >
+                  {joke || 'No joke available'}
+                </Typography>
+              </FadeAnimation>
+            </div>
             {joke && !joke.includes('No joke available') && (
               <Box
                 sx={{
@@ -81,7 +86,6 @@ const JokeDesktopView: React.FC<JokeDesktopViewProps> = ({
                 <JokeControls
                   category={category}
                   handleArrowClick={handleArrowClick}
-                  chipSize="small"
                 />
               </Box>
             )}

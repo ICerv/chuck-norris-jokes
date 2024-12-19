@@ -1,45 +1,52 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
-import FadeAnimation from './FadeAnimation';
+import { Box, Typography } from '@mui/material';
 import JokeControls from './JokeControls';
 import theme from 'theme';
+import FadeAnimation from './FadeAnimation';
 
 interface JokeMobileViewProps {
   joke: string;
   category?: string;
   handleArrowClick: () => void;
-  isVisible: boolean;
 }
 
 const JokeMobileView: React.FC<JokeMobileViewProps> = ({
   joke,
   category,
   handleArrowClick,
-  isVisible,
 }) => {
   return (
-    <Card
+    <Box
       sx={{
-        maxWidth: 300,
-        minHeight: 200,
-        backgroundColor: theme.palette.background.default,
-        color: 'text.primary',
-        textAlign: 'center',
-        boxShadow: theme.shadows[3],
-        border: `1px solid ${theme.colors.border}`,
-        p: 3,
+        width: '100%',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        borderRadius: 2,
+        position: 'relative',
       }}
     >
-      <CardContent
+      {/* Chuck Norris Image */}
+      <Box
+        component="img"
+        src="/images/chuck_norris_mobile.png"
+        alt="Chuck Norris Mobile"
         sx={{
-          padding: '0px',
+          width: '100%',
+          aspectRatio: '1 / 1',
+          objectFit: 'contain',
+        }}
+      />
+
+      {/* Joke Text Section */}
+      <Box
+        sx={{
+          flex: '1 1 auto',
+          paddingX: theme.spacing(3),
+          textAlign: 'center',
         }}
       >
-        <FadeAnimation isVisible={isVisible}>
+        <FadeAnimation keyProp={joke}>
           <Typography
             variant="h5"
             sx={{
@@ -50,23 +57,27 @@ const JokeMobileView: React.FC<JokeMobileViewProps> = ({
             {joke || 'No joke available'}
           </Typography>
         </FadeAnimation>
-      </CardContent>
+      </Box>
+
+      {/* Fixed Controls at the Bottom */}
       <Box
         sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          backgroundColor: theme.palette.background.paper,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: 1,
-          mt: 2,
+          padding: theme.spacing(2),
+          zIndex: 1,
+          borderTop: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <JokeControls
-          category={category}
-          handleArrowClick={handleArrowClick}
-          chipSize="medium"
-        />
+        <JokeControls category={category} handleArrowClick={handleArrowClick} />
       </Box>
-    </Card>
+    </Box>
   );
 };
 

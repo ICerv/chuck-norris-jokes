@@ -18,7 +18,6 @@ interface JokeControlsProps {
 const JokeControls: React.FC<JokeControlsProps> = ({
   category,
   handleArrowClick,
-  chipSize = 'medium',
 }) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),
@@ -29,6 +28,7 @@ const JokeControls: React.FC<JokeControlsProps> = ({
       {category && (
         <Chip
           label={category}
+          size={isMobile ? 'medium' : 'small'}
           sx={{
             backgroundColor: theme.palette.secondary.main,
             color: 'white',
@@ -37,10 +37,9 @@ const JokeControls: React.FC<JokeControlsProps> = ({
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             '& .MuiChip-label': {
-              fontSize: isMobile ? '1.2rem' : '1rem',
+              fontSize: isMobile ? '1.5rem' : '1rem',
             },
           }}
-          size={chipSize}
         />
       )}
       <IconButton

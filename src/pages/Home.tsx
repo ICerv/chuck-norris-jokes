@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setJoke } from '../redux/jokeSlice';
 import { fetchJokeByCategory, fetchRandomJoke } from '../services/api';
@@ -8,7 +8,7 @@ import { RootState } from '../redux/store';
 interface HomeProps {
   selectedCategory: string | null;
   searchQuery: string;
-  onSearch: (query: string) => Promise<void>; // Ensure `onSearch` is properly awaited
+  onSearch: (query: string) => Promise<void>;
 }
 
 const Home: React.FC<HomeProps> = ({
@@ -21,16 +21,6 @@ const Home: React.FC<HomeProps> = ({
   const joke = useSelector((state: RootState) => state.joke.currentJoke);
   const category = useSelector((state: RootState) => state.joke.category);
 
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-
-  // Common logic for triggering fade animations
-  const triggerFadeAnimation = async (callback: () => Promise<void>) => {
-    setIsVisible(false); // Trigger fade-out
-    await callback(); // Wait for the provided callback (search or fetch)
-    setTimeout(() => setIsVisible(true), 300); // Trigger fade-in after delay
-  };
-
-  // Fetch jokes based on the selected category or randomly
   const fetchCategoryOrRandomJoke = useCallback(async () => {
     const jokeData = selectedCategory
       ? await fetchJokeByCategory(selectedCategory)
@@ -48,22 +38,22 @@ const Home: React.FC<HomeProps> = ({
   // Handler for fetching jokes via search query
   const fetchSearchJoke = useCallback(async () => {
     if (searchQuery.trim()) {
-      await onSearch(searchQuery); // Call the provided `onSearch` function
+      await onSearch(searchQuery);
     }
   }, [onSearch, searchQuery]);
 
   // Unified handler for either search or category
-  const handleNextJoke = useCallback(() => {
+  const handleNextJoke = useCallback(async () => {
     if (searchQuery.trim()) {
-      triggerFadeAnimation(fetchSearchJoke);
+      await fetchSearchJoke();
     } else {
-      triggerFadeAnimation(fetchCategoryOrRandomJoke);
+      await fetchCategoryOrRandomJoke();
     }
   }, [fetchCategoryOrRandomJoke, fetchSearchJoke, searchQuery]);
 
   // Run fetch when the category changes
   useEffect(() => {
-    triggerFadeAnimation(fetchCategoryOrRandomJoke);
+    fetchCategoryOrRandomJoke();
   }, [fetchCategoryOrRandomJoke]);
 
   return (
@@ -71,7 +61,7 @@ const Home: React.FC<HomeProps> = ({
       joke={joke || 'No joke available'}
       category={category || 'Random'}
       onNextCategoryOrQuery={handleNextJoke}
-      isVisible={isVisible}
+      isVisible
     />
   );
 };
