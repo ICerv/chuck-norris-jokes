@@ -7,25 +7,19 @@ import Box from '@mui/material/Box';
 interface JokeSectionProps {
   joke: string;
   category?: string;
-  onNextCategory: () => void;
-  searchQuery: string;
-  onSearch: (query: string) => void;
+  onNextCategoryOrQuery: () => void;
+
   isVisible: boolean;
 }
 
 const JokeSection: React.FC<JokeSectionProps> = ({
   joke,
   category,
-  onNextCategory,
-  searchQuery,
-  onSearch,
+  onNextCategoryOrQuery,
+
   isVisible,
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));
-
-  const searchQueryOrNextCategory = () => {
-    searchQuery.trim() ? onSearch(searchQuery) : onNextCategory();
-  };
 
   return (
     <Box
@@ -43,14 +37,14 @@ const JokeSection: React.FC<JokeSectionProps> = ({
         <JokeDesktopView
           joke={joke}
           category={category}
-          handleArrowClick={searchQueryOrNextCategory}
+          handleArrowClick={onNextCategoryOrQuery}
           isVisible={isVisible}
         />
       ) : (
         <JokeMobileView
           joke={joke}
           category={category}
-          handleArrowClick={searchQueryOrNextCategory}
+          handleArrowClick={onNextCategoryOrQuery}
           isVisible={isVisible}
         />
       )}

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
 import useJokeActions from './hooks/useJokeActions';
-import Header from './components/Header';
+
 import { Box } from '@mui/material';
-import Footer from './components/Footer';
+import Header from 'components/Header/Header';
+import Footer from 'components/Footer/Footer';
 
 const App: React.FC = () => {
   const {
@@ -19,20 +20,19 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const handleCategorySelection = (category: string) => {
+  const selectCategory = (category: string) => {
+    setSearchQuery('');
     setSelectedCategory(category);
     handleCategoryClick(category);
   };
 
-  const handleRandomJoke = () => {
+  const fetchRandomJoke = () => {
     setSearchQuery('');
     setSelectedCategory(null);
     handleCategoryClick('random');
   };
 
-  const clearErrorMessage = () => {
-    setErrorMessage('');
-  };
+  const clearErrors = () => setErrorMessage('');
 
   return (
     <Router>
@@ -45,20 +45,26 @@ const App: React.FC = () => {
           height: '100vh',
         }}
       >
+        {/* Header */}
         <Header
           categories={categories}
-          onCategoryClick={handleCategorySelection}
+          onCategoryClick={selectCategory}
           searchQuery={searchQuery}
           onSearch={() => handleSearch(searchQuery)}
           onSearchQueryChange={setSearchQuery}
           loading={loading}
           errorMessage={errorMessage}
-          onRandomJokeClick={handleRandomJoke}
-          onClearError={clearErrorMessage}
+          onRandomJokeClick={fetchRandomJoke}
+          onClearError={clearErrors}
         />
 
+        {/* Main Content */}
         <Box
-          style={{ flex: '1 0 auto', display: 'flex', alignItems: 'center' }}
+          sx={{
+            flex: '1 0 auto',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
           <Home
             selectedCategory={selectedCategory}
@@ -66,6 +72,7 @@ const App: React.FC = () => {
             onSearch={handleSearch}
           />
         </Box>
+        {/* Footer */}
         <Footer />
       </Box>
     </Router>

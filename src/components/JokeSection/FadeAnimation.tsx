@@ -16,7 +16,9 @@ const FadeAnimation: React.FC<FadeAnimationProps> = ({
       style={{
         opacity: isVisible ? 1 : 0,
         visibility: isVisible ? 'visible' : 'hidden',
-        transition: `opacity ${duration}ms ease-in-out, visibility 0s linear ${isVisible ? '0s' : `${duration}ms`}`,
+        transition: `opacity ${duration}ms ease-in-out, visibility 0s linear ${
+          isVisible ? '0s' : `${duration}ms`
+        }`,
         overflowY: 'auto',
         maxHeight: '100%',
         paddingRight: '1rem',
@@ -24,7 +26,7 @@ const FadeAnimation: React.FC<FadeAnimationProps> = ({
         paddingLeft: '1rem',
       }}
     >
-      {children}
+      {isVisible ? children : null}{' '}
     </div>
   );
 };

@@ -58,32 +58,22 @@ const useJokeActions = () => {
   };
 
   const handleSearch = async (query: string) => {
-    if (query.trim() === '') {
-      setErrorMessage('Please enter a search query.');
-      return;
-    }
-
-    setLoading(true);
     setErrorMessage('');
+    setLoading(true);
+
     try {
       const jokeData = await fetchJokeByQuery(query);
 
-      if (!jokeData || !jokeData.joke) {
+      if (!jokeData || jokeData.joke.startsWith('No jokes found')) {
         setErrorMessage(
           `No results found for "${query}". Please try a different query.`,
         );
         return;
       }
 
-      const mappedJoke: Joke = {
-        joke: jokeData.joke || `No joke available for "${query}"`,
-        iconUrl: jokeData.iconUrl || null,
-        category: jokeData.category || null,
-      };
-
-      dispatch(setJoke(mappedJoke));
+      dispatch(setJoke(jokeData));
     } catch {
-      setErrorMessage('Failed to fetch the joke. Please try again.');
+      setErrorMessage('Failed to fetch joke. Try again.');
     } finally {
       setLoading(false);
     }
