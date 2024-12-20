@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({
       sx={{
         backgroundColor: theme.palette.background.default,
         width: '100%',
-        paddingTop: isMd ? '1.5rem' : '2rem',
+        paddingTop: '1.5rem',
       }}
     >
       <Container maxWidth="xl">

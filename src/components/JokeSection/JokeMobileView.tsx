@@ -33,8 +33,9 @@ const JokeMobileView: React.FC<JokeMobileViewProps> = ({
         alt="Chuck Norris Mobile"
         sx={{
           width: '100%',
-          aspectRatio: '1 / 1',
+          aspectRatio: '16 / 9',
           objectFit: 'contain',
+          marginTop: theme.spacing(2),
         }}
       />
 
