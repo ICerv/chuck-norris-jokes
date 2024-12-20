@@ -1,7 +1,15 @@
 import { Box, Typography, Container, Link, IconButton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 function Footer() {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+
+  if (!isSm) {
+    return null;
+  }
+
   return (
     <Box
       component="footer"

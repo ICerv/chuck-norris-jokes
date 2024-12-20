@@ -60,7 +60,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         {/* Category Grid */}
         <Box
           display="grid"
-          gridTemplateColumns={isMobile ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'}
+          gridTemplateColumns={isMobile ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'}
           gap="8px"
           p="8px"
         >
@@ -78,6 +78,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
                 justifyContent: 'center',
                 border: '1px solid lightgray',
                 borderRadius: '8px',
+                padding: '8px',
                 '&:hover': {
                   borderColor: 'primary.main',
                 },
