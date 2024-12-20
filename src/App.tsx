@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const selectCategory = (category: string) => {
-    setSearchQuery('');
+    // setSearchQuery('');
     setSelectedCategory(category);
     handleCategoryClick(category);
   };

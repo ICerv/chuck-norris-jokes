@@ -65,15 +65,15 @@ const JokeMobileView: React.FC<JokeMobileViewProps> = ({
         sx={{
           position: 'fixed',
           bottom: 0,
-          left: 0,
           width: '100%',
           backgroundColor: theme.palette.background.paper,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: theme.spacing(2),
+          padding: theme.spacing(3),
           zIndex: 1,
           borderTop: `1px solid ${theme.palette.divider}`,
+          boxSizing: 'border-box',
         }}
       >
         <JokeControls category={category} handleArrowClick={handleArrowClick} />

@@ -5,6 +5,7 @@ import {
   fetchJokeCategories,
   fetchJokeByQuery,
   fetchRandomJoke,
+  fetchJokeByCategory,
 } from '../services/api';
 
 interface Joke {
@@ -40,7 +41,7 @@ const useJokeActions = () => {
       if (category === 'random') {
         jokeData = await fetchRandomJoke();
       } else {
-        jokeData = await fetchJokeByQuery(category);
+        jokeData = await fetchJokeByCategory(category);
       }
 
       const mappedJoke: Joke = {
