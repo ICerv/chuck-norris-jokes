@@ -80,7 +80,6 @@ const JokeDesktopView: React.FC<JokeDesktopViewProps> = ({
                   transform: 'translateX(-50%)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1,
                 }}
               >
                 <JokeControls
