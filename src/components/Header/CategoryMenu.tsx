@@ -60,7 +60,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         {/* Category Grid */}
         <Box
           display="grid"
-          gridTemplateColumns={isMobile ? 'repeat(2, 1fr)' : 'repeat(2, 1fr)'}
+          gridTemplateColumns={isMobile ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'}
           gap="8px"
           p="8px"
         >
