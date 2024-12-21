@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const selectCategory = (category: string) => {
-    // setSearchQuery('');
+    setSearchQuery('');
     setSelectedCategory(category);
     handleCategoryClick(category);
   };
@@ -45,7 +45,6 @@ const App: React.FC = () => {
           height: '100vh',
         }}
       >
-        {/* Header */}
         <Header
           categories={categories}
           onCategoryClick={selectCategory}
@@ -58,7 +57,6 @@ const App: React.FC = () => {
           onClearError={clearErrors}
         />
 
-        {/* Main Content */}
         <Box
           sx={{
             flex: '1 0 auto',
@@ -72,7 +70,6 @@ const App: React.FC = () => {
             onSearch={handleSearch}
           />
         </Box>
-        {/* Footer */}
         <Footer />
       </Box>
     </Router>
