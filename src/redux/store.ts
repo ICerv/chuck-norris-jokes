@@ -1,28 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
-import jokeReducer from './jokeSlice';
-
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, jokeReducer);
+import { randomJokeReducer } from './randomJokeSlice'; // Named export
+import categoryReducer from './categorySlice'; // Default export
+import { searchReducer } from './searchSlice'; // Named export
 
 export const store = configureStore({
   reducer: {
-    joke: persistedReducer,
+    randomJoke: randomJokeReducer,
+    categories: categoryReducer,
+    search: searchReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-      },
-    }),
 });
 
-export const persistor = persistStore(store);
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>; // Infers the store's state type for use in `useSelector`
+export type AppDispatch = typeof store.dispatch; // Infers dispatch type for use in `useDispatch`

@@ -1,24 +1,28 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { persistor, store } from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import { store } from './redux/store';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import React from 'react';
+
+const App = React.lazy(() => import('./App'));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
 root.render(
-  <Provider store={store}>
-    <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+  <React.StrictMode>
+    <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <App />
+        </React.Suspense>
       </ThemeProvider>
-    </PersistGate>
-  </Provider>,
+    </Provider>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

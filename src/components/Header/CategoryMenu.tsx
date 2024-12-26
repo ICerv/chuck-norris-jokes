@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface CategoryMenuProps {
   categories: string[];
@@ -21,7 +19,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Mobile responsiveness
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +32,10 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
   return (
     <>
       <Button
+        aria-controls={anchorEl ? 'category-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={Boolean(anchorEl)}
+        tabIndex={0}
         color="secondary"
         onClick={openMenu}
         variant="text"
@@ -45,6 +47,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         Find Jokes by Category
       </Button>
       <Menu
+        id="category-menu"
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={closeMenu}
@@ -57,12 +60,11 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
           horizontal: 'center',
         }}
       >
-        {/* Category Grid */}
         <Box
           display="grid"
-          gridTemplateColumns={isMobile ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'}
-          gap="8px"
-          p="8px"
+          gridTemplateColumns={isSm ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'}
+          gap={2}
+          p={1}
         >
           {categories.map((category) => (
             <MenuItem
@@ -71,14 +73,15 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
                 onCategoryClick(category);
                 closeMenu();
               }}
+              tabIndex={0}
               sx={{
                 textAlign: 'center',
                 alignItems: 'center',
                 display: 'flex',
                 justifyContent: 'center',
                 border: '1px solid lightgray',
-                borderRadius: '8px',
-                padding: '8px',
+                borderRadius: '0.5rem',
+                padding: '0.5rem',
                 '&:hover': {
                   borderColor: 'primary.main',
                 },
@@ -88,15 +91,9 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
             </MenuItem>
           ))}
         </Box>
-
-        {/* Random Button */}
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          p="16px"
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
           <Button
+            aria-label="Get a random joke"
             variant="contained"
             color="secondary"
             onClick={() => {
@@ -104,15 +101,12 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
               closeMenu();
             }}
             sx={{
-              borderRadius: '25px',
+              borderRadius: '1.5rem',
               padding: '0.5rem 2rem',
-              letterSpacing: '0.05rem',
               textTransform: 'none',
-              transition: 'all 0.3s ease',
               '&:hover': {
                 backgroundColor: 'secondary.dark',
               },
-              width: isMobile ? '100%' : 'auto',
             }}
           >
             Random

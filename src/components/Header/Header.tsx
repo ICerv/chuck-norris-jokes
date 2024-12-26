@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import { Box, Container, useMediaQuery, Theme, useTheme } from '@mui/material';
+import React from 'react';
 import SearchBar from './SearchBar';
 import CategoryMenu from './CategoryMenu';
-
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/material/styles/useTheme';
+import { Theme } from '@mui/material/styles';
 interface HeaderProps {
   categories: string[];
   onCategoryClick: (category: string) => void;
   searchQuery: string;
   onSearch: () => void;
   onSearchQueryChange: (query: string) => void;
-  loading: boolean;
-  errorMessage: string;
   onRandomJokeClick: () => void;
   onClearError: () => void;
+  errorMessage: string | null;
+  loading: boolean;
+  onClearSearch: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -21,12 +25,12 @@ const Header: React.FC<HeaderProps> = ({
   searchQuery,
   onSearch,
   onSearchQueryChange,
-  loading,
-  errorMessage,
   onRandomJokeClick,
   onClearError,
+  errorMessage,
+  loading,
+  onClearSearch,
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
   const theme: Theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));
@@ -51,25 +55,38 @@ const Header: React.FC<HeaderProps> = ({
             minHeight: '70px',
           }}
         >
-          {/* Title */}
-          <Box fontWeight="bold" fontSize="1rem">
+          <Box
+            component="a"
+            aria-label="Visit Chuck Norris Jokes API"
+            tabIndex={0}
+            href="https://api.chucknorris.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            fontWeight="bold"
+            fontSize="1.5rem"
+            sx={{
+              textDecoration: 'none',
+              color: 'inherit',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
             Chuck Norris Jokes
           </Box>
 
-          {/* Search Bar */}
           <SearchBar
+            aria-label="Search jokes"
+            onClearSearch={onClearSearch}
+            onClearError={onClearError}
             searchQuery={searchQuery}
             onSearchQueryChange={onSearchQueryChange}
             onSearch={onSearch}
-            onClearError={onClearError}
+            errorMessage={errorMessage || ''}
             loading={loading}
-            errorMessage={errorMessage}
-            isFocused={isFocused}
-            setIsFocused={setIsFocused}
           />
-
-          {/* Category Menu */}
           <CategoryMenu
+            aria-label="Category menu"
             categories={categories}
             onCategoryClick={onCategoryClick}
             onRandomJokeClick={onRandomJokeClick}
