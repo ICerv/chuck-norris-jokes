@@ -1,78 +1,151 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Home from './pages/Home';
-import useJokeActions from './hooks/useJokeActions';
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from './redux/store';
+import {
+  fetchCategories,
+  fetchJokesByCategory,
+  resetCategory,
+  setCategory,
+} from './redux/categorySlice';
+import { fetchRandomJoke } from './redux/randomJokeSlice';
+import {
+  clearError,
+  fetchJokesByQuery,
+  resetSearchState,
+  setSearchQuery,
+} from './redux/searchSlice';
 import { Box } from '@mui/material';
-import Header from 'components/Header/Header';
-import Footer from 'components/Footer/Footer';
+
+import Home from './pages/Home';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 const App: React.FC = () => {
-  const {
-    categories,
-    handleCategoryClick,
-    handleSearch,
-    loading,
-    errorMessage,
-    setErrorMessage,
-  } = useJokeActions();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { categories, currentCategory, currentJoke } = useSelector(
+    (state: RootState) => state.categories,
+  );
+  const randomJoke = useSelector((state: RootState) => state.randomJoke);
+  const searchResults = useSelector((state: RootState) => state.search.results);
+  const totalSearchResults = useSelector(
+    (state: RootState) => state.search.total,
+  );
+  const searchQuery = useSelector((state: RootState) => state.search.query);
+  const errorMessage = useSelector(
+    (state: RootState) => state.search.errorMessage,
+  );
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const selectCategory = (category: string) => {
-    setSearchQuery('');
-    setSelectedCategory(category);
-    handleCategoryClick(category);
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchRandomJoke())
+      .unwrap()
+      .catch(() => console.error('Failed to fetch a random joke.'));
+  }, [dispatch]);
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setCurrentIndex(0);
+    dispatch(setSearchQuery(searchQuery));
+    dispatch(fetchJokesByQuery(searchQuery))
+      .unwrap()
+      .catch(() => console.error('Failed to fetch jokes.'));
   };
 
-  const fetchRandomJoke = () => {
-    setSearchQuery('');
-    setSelectedCategory(null);
-    handleCategoryClick('random');
+  const handleCategoryClick = (category: string) => {
+    dispatch(resetSearchState());
+    setCurrentIndex(0);
+    dispatch(setCategory(category));
+    dispatch(fetchJokesByCategory(category))
+      .unwrap()
+      .catch(() =>
+        console.error('Failed to fetch jokes for category:', category),
+      );
   };
 
-  const clearErrors = () => setErrorMessage('');
+  const handleArrowClick = () => {
+    if (currentCategory) {
+      dispatch(fetchJokesByCategory(currentCategory));
+    } else {
+      dispatch(fetchRandomJoke());
+    }
+  };
+
+  const handleRandomJokeClick = () => {
+    dispatch(resetCategory());
+    dispatch(resetSearchState());
+    dispatch(fetchRandomJoke()).unwrap();
+  };
+
+  const handleSearchQueryChange = (query: string) => {
+    dispatch(setSearchQuery(query));
+  };
+
+  const handleClearSearch = () => {
+    dispatch(resetSearchState());
+    dispatch(resetCategory());
+    dispatch(fetchRandomJoke());
+  };
 
   return (
-    <Router>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
+      <Header
+        categories={categories}
+        onCategoryClick={handleCategoryClick}
+        onRandomJokeClick={handleRandomJokeClick}
+        onClearError={() => dispatch(clearError())}
+        searchQuery={searchQuery}
+        onSearchQueryChange={handleSearchQueryChange}
+        onSearch={handleSearch}
+        onClearSearch={handleClearSearch}
+        errorMessage={errorMessage}
+        loading={false}
+      />
+
       <Box
-        style={{
+        sx={{
+          flex: '1 0 auto',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          height: '100vh',
+          justifyContent: 'center',
         }}
       >
-        <Header
-          categories={categories}
-          onCategoryClick={selectCategory}
-          searchQuery={searchQuery}
-          onSearch={() => handleSearch(searchQuery)}
-          onSearchQueryChange={setSearchQuery}
-          loading={loading}
+        <Home
+          currentJoke={
+            typeof currentJoke === 'string'
+              ? currentJoke
+              : currentJoke?.text ||
+                randomJoke.currentJoke ||
+                'No joke available'
+          }
+          searchResults={searchResults}
+          currentIndex={currentIndex}
+          onNextJoke={() =>
+            setCurrentIndex((prev) => (prev + 1) % searchResults.length)
+          }
+          onPreviousJoke={() =>
+            setCurrentIndex((prev) =>
+              prev === 0 ? searchResults.length - 1 : prev - 1,
+            )
+          }
+          onNextCategoryOrQuery={handleArrowClick}
           errorMessage={errorMessage}
-          onRandomJokeClick={fetchRandomJoke}
-          onClearError={clearErrors}
+          total={searchQuery ? totalSearchResults : undefined}
+          category={currentCategory || randomJoke.category || 'Uncategorized'}
         />
-
-        <Box
-          sx={{
-            flex: '1 0 auto',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Home
-            selectedCategory={selectedCategory}
-            searchQuery={searchQuery}
-            onSearch={handleSearch}
-          />
-        </Box>
-        <Footer />
       </Box>
-    </Router>
+
+      <Footer />
+    </Box>
   );
 };
 

@@ -1,67 +1,69 @@
-import React, { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setJoke } from '../redux/jokeSlice';
-import { fetchJokeByCategory, fetchRandomJoke } from '../services/api';
+import React, { useState, useEffect } from 'react';
 import JokeSection from '../components/JokeSection/JokeSection';
-import { RootState } from '../redux/store';
+import Loading from '../components/Loading';
+import { calculateIsSearchQuery } from '../utils/helpers';
 
 interface HomeProps {
-  selectedCategory: string | null;
-  searchQuery: string;
-  onSearch: (query: string) => Promise<void>;
+  currentJoke: string;
+  searchResults: { text: string; category: string; iconUrl: string | null }[];
+  currentIndex: number;
+  onNextJoke: () => void;
+  onPreviousJoke: () => void;
+  onNextCategoryOrQuery: () => void;
+  errorMessage: string | null;
+  total?: number;
+  category?: string;
 }
 
 const Home: React.FC<HomeProps> = ({
-  selectedCategory,
-  searchQuery,
-  onSearch,
+  currentJoke,
+  searchResults,
+  currentIndex,
+  onNextJoke,
+  onPreviousJoke,
+  onNextCategoryOrQuery,
+  errorMessage,
+  total,
+  category,
 }) => {
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const joke = useSelector((state: RootState) => state.joke.currentJoke);
-  const category = useSelector((state: RootState) => state.joke.category);
-
-  const fetchCategoryOrRandomJoke = useCallback(async () => {
-    const jokeData = selectedCategory
-      ? await fetchJokeByCategory(selectedCategory)
-      : await fetchRandomJoke();
-
-    dispatch(
-      setJoke({
-        joke: jokeData.joke,
-        iconUrl: jokeData.iconUrl,
-        category: selectedCategory || jokeData.category || 'Random',
-      }),
-    );
-  }, [dispatch, selectedCategory]);
-
-  // Handler for fetching jokes via search query
-  const fetchSearchJoke = useCallback(async () => {
-    if (searchQuery.trim()) {
-      await onSearch(searchQuery);
-    }
-  }, [onSearch, searchQuery]);
-
-  // Unified handler for either search or category
-  const handleNextJoke = useCallback(async () => {
-    if (searchQuery.trim()) {
-      await fetchSearchJoke();
-    } else {
-      await fetchCategoryOrRandomJoke();
-    }
-  }, [fetchCategoryOrRandomJoke, fetchSearchJoke, searchQuery]);
-
-  // Run fetch when the category changes
   useEffect(() => {
-    fetchCategoryOrRandomJoke();
-  }, [fetchCategoryOrRandomJoke]);
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  const displayedJoke =
+    searchResults.length > 0
+      ? searchResults[currentIndex]?.text || 'No joke available'
+      : currentJoke || 'No joke available';
+
+  const displayedCategory =
+    searchResults.length > 0
+      ? searchResults[currentIndex]?.category
+      : category || 'Uncategorized';
+
+  const isSearchQuery = calculateIsSearchQuery(
+    searchResults.length > 0 ? 'searchQueryPlaceholder' : undefined,
+    total,
+  );
 
   return (
     <JokeSection
-      joke={joke || 'No joke available'}
-      category={category || 'Random'}
-      onNextCategoryOrQuery={handleNextJoke}
-      isVisible
+      joke={errorMessage || displayedJoke}
+      query={isSearchQuery ? 'searchQueryPlaceholder' : undefined}
+      category={displayedCategory}
+      total={total}
+      onNextCategoryOrQuery={onNextCategoryOrQuery}
+      onNext={onNextJoke}
+      onPrevious={onPreviousJoke}
+      errorMessage={errorMessage}
+      icon={searchResults[currentIndex]?.iconUrl || null}
+      currentIndex={currentIndex}
     />
   );
 };

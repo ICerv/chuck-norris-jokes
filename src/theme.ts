@@ -36,16 +36,17 @@ const theme = createTheme({
     },
     secondary: {
       main: '#ab47bc',
+      contrastText: '#ffffff',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#ffffff',
+      paper: '#f5f5f5',
+    },
+    text: {
+      primary: '#000000',
     },
   },
 
-  typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
-    fontWeightBold: 700,
-  },
   breakpoints: {
     values: {
       xs: 0,

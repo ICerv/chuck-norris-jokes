@@ -1,43 +1,35 @@
-import React, { useCallback } from 'react';
-import {
-  Box,
-  TextField,
-  Button,
-  IconButton,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+import React from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 
 interface SearchBarProps {
   searchQuery: string;
   onSearchQueryChange: (query: string) => void;
-  onSearch: () => void;
   onClearError: () => void;
-  loading: boolean;
+  onClearSearch: () => void;
+  onSearch: () => void;
   errorMessage: string;
-  isFocused: boolean;
-  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
   onSearchQueryChange,
-  onSearch,
   onClearError,
-  loading,
+  onClearSearch,
+  onSearch,
   errorMessage,
-  isFocused,
-  setIsFocused,
+  loading,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleSearch = useCallback(() => {
-    if (searchQuery.trim() === '') return; // Prevent searching for empty input
-    onSearch();
-  }, [onSearch, searchQuery]);
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const maxCharacters = 30;
 
   return (
     <Box
@@ -45,42 +37,35 @@ const SearchBar: React.FC<SearchBarProps> = ({
       onSubmit={(e) => e.preventDefault()}
       sx={{
         display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: isMobile ? 'stretch' : 'flex-start',
+        flexDirection: isSm ? 'column' : 'row',
+        alignItems: isSm ? 'stretch' : 'flex-start',
         gap: '1rem',
-        width: isMobile ? '100%' : 'auto',
+        width: isSm ? '100%' : 'auto',
       }}
     >
       <TextField
         size="small"
         label="Search Jokes"
+        aria-label="Search jokes"
         variant="outlined"
         value={searchQuery}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
         onChange={(e) => {
-          if (e.target.value.length <= 20) {
+          if (e.target.value.length <= maxCharacters) {
             onSearchQueryChange(e.target.value);
-            if (errorMessage) onClearError();
           }
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            if (searchQuery.trim()) onSearch();
+            onSearch();
           }
         }}
         error={!!errorMessage}
         helperText={
           errorMessage ||
-          (isFocused
-            ? `You can enter up to 20 characters (${searchQuery.length}/20)`
-            : '')
+          `You can enter up to 30 characters (${searchQuery.length}/30)`
         }
+        aria-describedby="search-helper-text"
         fullWidth
         slotProps={{
           input: {
@@ -89,9 +74,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 onClick={() => {
                   onSearchQueryChange('');
                   onClearError();
+                  onClearSearch();
                 }}
                 size="small"
-                aria-label="clear"
+                aria-label="Clear search field"
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
@@ -103,15 +89,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
         variant="contained"
         color="secondary"
         startIcon={<SearchIcon />}
-        onClick={handleSearch}
+        onClick={onSearch}
+        aria-disabled={loading}
         disabled={loading}
         sx={{
           borderRadius: '25px',
-          padding: isMobile ? '0.5rem' : '0.5rem 2rem',
+          padding: isSm ? '0.5rem' : '0.5rem 2rem',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           transition: 'background-color 0.3s ease',
+          '&:focus': {
+            outline: '2px solid #6a1b9a',
+            outlineOffset: '2px',
+          },
         }}
       >
         Search
