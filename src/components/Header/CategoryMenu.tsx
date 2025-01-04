@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -17,28 +17,43 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
   onCategoryClick,
   onRandomJokeClick,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMouseEnterButton = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const closeMenu = () => {
+  const handleMouseLeave = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (category: string) => {
+    onCategoryClick(category);
+    setAnchorEl(null);
+  };
+
+  const handleRandomJokeClick = () => {
+    onRandomJokeClick();
     setAnchorEl(null);
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'inline-block',
+        position: 'relative',
+      }}
+      onMouseLeave={handleMouseLeave}
+    >
       <Button
         aria-controls={anchorEl ? 'category-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={Boolean(anchorEl)}
-        tabIndex={0}
         color="secondary"
-        onClick={openMenu}
         variant="text"
+        onMouseEnter={handleMouseEnterButton}
         sx={{
           textTransform: 'none',
           fontWeight: 'bold',
@@ -50,7 +65,10 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         id="category-menu"
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
-        onClose={closeMenu}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          onMouseLeave: handleMouseLeave,
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -69,11 +87,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
           {categories.map((category) => (
             <MenuItem
               key={category}
-              onClick={() => {
-                onCategoryClick(category);
-                closeMenu();
-              }}
-              tabIndex={0}
+              onClick={() => handleMenuItemClick(category)}
               sx={{
                 textAlign: 'center',
                 alignItems: 'center',
@@ -96,10 +110,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
             aria-label="Get a random joke"
             variant="contained"
             color="secondary"
-            onClick={() => {
-              onRandomJokeClick();
-              closeMenu();
-            }}
+            onClick={handleRandomJokeClick}
             sx={{
               borderRadius: '1.5rem',
               padding: '0.5rem 2rem',
@@ -113,7 +124,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
           </Button>
         </Box>
       </Menu>
-    </>
+    </Box>
   );
 };
 
