@@ -1,8 +1,39 @@
-import { Box, Typography, Container, Link, IconButton } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import React from 'react';
+import {
+  Typography,
+  Container,
+  Link,
+  IconButton,
+  useMediaQuery,
+} from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { useTheme, styled } from '@mui/material/styles';
+
+const StyledFooter = styled('footer')(({ theme }) => ({
+  width: '100%',
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  padding: theme.spacing(2, 0),
+  textAlign: 'center',
+  marginTop: 'auto',
+}));
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+}));
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  color: theme.palette.text.primary,
+  textDecoration: 'none',
+  '&:hover': {
+    color: theme.palette.primary.main,
+  },
+}));
 
 function Footer() {
   const theme = useTheme();
@@ -13,54 +44,45 @@ function Footer() {
   }
 
   return (
-    <footer
-      style={{
-        width: '100%',
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.text.primary,
-        padding: '1rem 0',
-        textAlign: 'center',
-        marginTop: 'auto',
-      }}
-    >
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}
-      >
+    <StyledFooter>
+      <StyledContainer>
         <Typography
           variant="body2"
-          sx={{ fontSize: '0.875rem' }}
+          sx={{
+            fontSize: '0.875rem',
+          }}
           role="contentinfo"
         >
           &copy; 2024 Created by Inna Červenková
         </Typography>
 
-        <Link
+        <StyledLink
           aria-label="View the source code on GitHub"
           href="https://github.com/ICerv/chuck-norris-jokes"
           target="_blank"
           rel="noopener noreferrer"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            color: 'text.primary',
-            textDecoration: 'none',
-            '&:hover': { color: 'primary.main' },
-          }}
         >
-          <IconButton color="inherit" size="small" aria-label="GitHub link">
+          <IconButton
+            color="inherit"
+            size="small"
+            aria-label="GitHub link"
+            sx={{
+              marginRight: '0.25rem',
+            }}
+          >
             <GitHubIcon fontSize="inherit" />
           </IconButton>
-          <Typography variant="body2" sx={{ fontSize: '0.875rem' }}>
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: '0.875rem',
+            }}
+          >
             View on GitHub
           </Typography>
-        </Link>
-      </Container>
-    </footer>
+        </StyledLink>
+      </StyledContainer>
+    </StyledFooter>
   );
 }
 

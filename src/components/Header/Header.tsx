@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/material/styles/useTheme';
 import { Theme } from '@mui/material/styles';
+import Logo from './Logo';
 interface HeaderProps {
   categories: string[];
   onCategoryClick: (category: string) => void;
@@ -38,9 +39,17 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.colors.shadow.normal,
         width: '100%',
-        paddingTop: '1.5rem',
+        paddingTop: {
+          xs: '0',
+          sm: '1.5rem',
+        },
+        paddingBottom: {
+          xs: '1rem',
+          sm: '0.5rem',
+        },
       }}
     >
       <Container maxWidth="xl">
@@ -55,25 +64,7 @@ const Header: React.FC<HeaderProps> = ({
             minHeight: '70px',
           }}
         >
-          <Box
-            component="a"
-            aria-label="Visit Chuck Norris Jokes API"
-            tabIndex={0}
-            href="https://api.chucknorris.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            fontWeight="bold"
-            fontSize="1.5rem"
-            sx={{
-              textDecoration: 'none',
-              color: 'inherit',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-            }}
-          >
-            Chuck Norris Jokes
-          </Box>
+          <Logo />
 
           <SearchBar
             aria-label="Search jokes"
