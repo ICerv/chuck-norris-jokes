@@ -14,11 +14,12 @@ import {
   resetSearchState,
   setSearchQuery,
 } from './redux/searchSlice';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import Home from './pages/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import ResetButton from './components/ResetButton';
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -143,6 +144,8 @@ const App: React.FC = () => {
           category={currentCategory || randomJoke.category || 'Uncategorized'}
         />
       </Box>
+
+      <ResetButton onResetClick={handleClearSearch} />
 
       <Footer />
     </Box>

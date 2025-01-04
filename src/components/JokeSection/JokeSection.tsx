@@ -15,7 +15,6 @@ interface JokeSectionProps {
   onNext?: () => void;
   onPrevious?: () => void;
   errorMessage?: string | null;
-  icon?: string | null;
   currentIndex?: number;
 }
 
@@ -28,7 +27,6 @@ const JokeSection: React.FC<JokeSectionProps> = ({
   onNext,
   onPrevious,
   errorMessage,
-  icon,
   currentIndex,
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.up('sm'));

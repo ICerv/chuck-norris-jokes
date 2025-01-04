@@ -62,7 +62,6 @@ const Home: React.FC<HomeProps> = ({
       onNext={onNextJoke}
       onPrevious={onPreviousJoke}
       errorMessage={errorMessage}
-      icon={searchResults[currentIndex]?.iconUrl || null}
       currentIndex={currentIndex}
     />
   );
