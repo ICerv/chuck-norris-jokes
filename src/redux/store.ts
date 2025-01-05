@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { randomJokeReducer } from './randomJokeSlice'; // Named export
-import categoryReducer from './categorySlice'; // Default export
-import { searchReducer } from './searchSlice'; // Named export
+import { randomJokeReducer } from './randomJokeSlice';
+import categoryReducer from './categorySlice';
+import { searchReducer } from './searchSlice';
 
 export const store = configureStore({
   reducer: {
@@ -9,6 +9,10 @@ export const store = configureStore({
     categories: categoryReducer,
     search: searchReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>; // Infers the store's state type for use in `useSelector`

@@ -14,9 +14,8 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'], // Moved to resolve.modules
   },
-  devtool: false,
-
   module: {
     rules: [
       {
@@ -78,7 +77,6 @@ module.exports = {
       }),
     ],
   },
-
   devServer: {
     static: './dist',
     port: 3000,

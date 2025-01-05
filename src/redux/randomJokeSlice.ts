@@ -3,14 +3,12 @@ import axios from 'axios';
 
 interface RandomJokeState {
   currentJoke: string;
-  iconUrl: string | null;
   category: string | null;
   error: string | null;
 }
 
 const initialState: RandomJokeState = {
   currentJoke: '',
-  iconUrl: null,
   category: null,
   error: null,
 };
@@ -35,7 +33,6 @@ export const fetchRandomJoke = createAsyncThunk(
 
       return {
         joke: response.data.value,
-        iconUrl: response.data.icon_url,
         category: randomCategory,
       };
     } catch (error) {
@@ -55,7 +52,6 @@ const randomJokeSlice = createSlice({
       })
       .addCase(fetchRandomJoke.fulfilled, (state, action) => {
         state.currentJoke = action.payload.joke;
-        state.iconUrl = action.payload.iconUrl;
         state.category = action.payload.category;
         state.error = null;
       })

@@ -1,13 +1,8 @@
 import React from 'react';
-import { Box, Link, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, Link } from '@mui/material';
 import LogoImage from '../../assets/images/logo.png';
-import { Theme } from '@mui/material/styles';
 
 const Logo: React.FC = () => {
-  const theme: Theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
-
   return (
     <Link
       href="https://api.chucknorris.io"
@@ -24,14 +19,17 @@ const Logo: React.FC = () => {
       <Box
         component="img"
         src={LogoImage}
-        alt="Chuck Norris Jokes Logo"
+        alt="Logo"
         role="img"
         sx={{
-          width: '100px',
+          width: {
+            xs: '100px',
+            sm: '140px',
+          },
           height: 'auto',
           marginTop: {
             xs: '0',
-            sm: '-25px',
+            sm: '-45px',
           },
         }}
       />

@@ -5,7 +5,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { jest } from '@jest/globals';
 import Footer from '../../../src/components/Footer/Footer';
 import theme from '../../../src/theme';
-
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Mock `useMediaQuery` to simulate different screen sizes
@@ -39,11 +38,24 @@ describe('Footer Component', () => {
       </ThemeProvider>,
     );
 
-    // Assert that key elements are rendered
+    // Assert that "Created by Inna Červenková" text is rendered
     expect(screen.getByText(/Created by Inna Červenková/i)).toBeInTheDocument();
+
+    // Assert that "View on GitHub" text is rendered
     expect(screen.getByText(/View on GitHub/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: /View on GitHub/i }),
-    ).toHaveAttribute('href', 'https://github.com/ICerv/chuck-norris-jokes');
+
+    // Assert that the link is present with the correct href
+    const githubLink = screen.getByRole('link', {
+      name: /View the source code on GitHub/i,
+    });
+    expect(githubLink).toBeInTheDocument();
+    expect(githubLink).toHaveAttribute(
+      'href',
+      'https://github.com/ICerv/chuck-norris-jokes',
+    );
+
+    // Assert that the GitHubIcon is present
+    const githubIcon = screen.getByLabelText(/GitHub link/i);
+    expect(githubIcon).toBeInTheDocument();
   });
 });

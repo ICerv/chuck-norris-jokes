@@ -3,10 +3,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { useIsMobile } from '../../hooks/useResponsive';
 
 interface SearchBarProps {
   searchQuery: string;
@@ -27,8 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   errorMessage,
   loading,
 }) => {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSm = useIsMobile();
   const maxCharacters = 30;
 
   return (
