@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useIsMobile } from '../../hooks/useResponsive';
 
 interface CategoryMenuProps {
   categories: string[];
@@ -18,8 +18,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
   onRandomJokeClick,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSm = useIsMobile();
 
   const handleMouseEnterButton = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

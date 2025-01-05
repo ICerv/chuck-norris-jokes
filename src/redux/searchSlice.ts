@@ -4,10 +4,9 @@ import axios from 'axios';
 interface Joke {
   text: string;
   category: string;
-  iconUrl: string | null;
 }
 
-interface SearchState {
+export interface SearchState {
   results: Joke[];
   total: number;
   currentIndex: number;
@@ -36,7 +35,6 @@ export const fetchJokesByQuery = createAsyncThunk(
 
       const jokes = response.data.result.map((joke: any) => ({
         text: joke.value,
-        iconUrl: joke.icon_url,
       }));
 
       return { jokes, total: response.data.total };

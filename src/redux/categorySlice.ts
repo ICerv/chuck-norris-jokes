@@ -6,7 +6,7 @@ interface Joke {
   text: string;
 }
 
-interface CategoryState {
+export interface CategoryState {
   categories: string[];
   currentCategory: string | null;
   currentJoke: Joke | null;
@@ -34,6 +34,7 @@ export const fetchJokesByCategory = createAsyncThunk(
       },
     );
     return {
+      id: response.data.id,
       joke: response.data.value,
       category,
     };
@@ -69,14 +70,23 @@ const categorySlice = createSlice({
     builder
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.error = action.error.message || 'Failed to fetch categories';
       })
       .addCase(fetchJokesByCategory.fulfilled, (state, action) => {
-        const { joke, category } = action.payload;
-        if (!state.jokes.some((j) => j.id === joke.id)) {
-          state.jokes.push(joke);
+        const { id, joke, category } = action.payload;
+        const formattedJoke = { id, text: joke };
+        if (!state.jokes.some((j) => j.id === formattedJoke.id)) {
+          state.jokes.push(formattedJoke);
         }
-        state.currentJoke = joke;
+        state.currentJoke = formattedJoke;
         state.currentCategory = category;
+        state.error = null;
+      })
+      .addCase(fetchJokesByCategory.rejected, (state, action) => {
+        state.error = action.error.message || 'Failed to fetch jokes';
       });
   },
 });

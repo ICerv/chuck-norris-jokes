@@ -22,8 +22,8 @@ interface JokeControlsProps {
 const JokeControls: React.FC<JokeControlsProps> = ({
   category,
   query,
-  total,
-  currentIndex,
+  total = 0,
+  currentIndex = 0,
   onNext,
   onPrevious,
   handleArrowClick,

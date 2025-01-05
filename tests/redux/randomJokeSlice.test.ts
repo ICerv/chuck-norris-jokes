@@ -6,7 +6,6 @@ import {
 describe('randomJokeReducer', () => {
   const initialState = {
     currentJoke: '',
-    iconUrl: null,
     category: null,
     error: null,
   };
@@ -22,13 +21,11 @@ describe('randomJokeReducer', () => {
       type: fetchRandomJoke.fulfilled.type,
       payload: {
         joke: 'Test joke',
-        iconUrl: 'https://example.com/icon.png',
         category: 'test-category',
       },
     };
     const expectedState = {
       currentJoke: 'Test joke',
-      iconUrl: 'https://example.com/icon.png',
       category: 'test-category',
       error: null,
     };

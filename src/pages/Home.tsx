@@ -5,7 +5,7 @@ import { calculateIsSearchQuery } from '../utils/helpers';
 
 interface HomeProps {
   currentJoke: string;
-  searchResults: { text: string; category: string; iconUrl: string | null }[];
+  searchResults: { text: string; category: string }[];
   currentIndex: number;
   onNextJoke: () => void;
   onPreviousJoke: () => void;

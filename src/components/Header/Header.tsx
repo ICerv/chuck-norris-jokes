@@ -3,10 +3,11 @@ import SearchBar from './SearchBar';
 import CategoryMenu from './CategoryMenu';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/material/styles/useTheme';
 import { Theme } from '@mui/material/styles';
 import Logo from './Logo';
+import theme from '../../theme';
+import { useIsDesktop, useIsMobile } from '../../hooks/useResponsive';
 interface HeaderProps {
   categories: string[];
   onCategoryClick: (category: string) => void;
@@ -32,10 +33,10 @@ const Header: React.FC<HeaderProps> = ({
   loading,
   onClearSearch,
 }) => {
-  const theme: Theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  const isSm = useMediaQuery(theme.breakpoints.up('sm'));
-
+  // const isMd = useMediaQuery(theme.breakpoints.up('md'));
+  // const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+  const isMd = useIsDesktop();
+  const isSm = useIsMobile();
   return (
     <Box
       sx={{
@@ -89,3 +90,6 @@ const Header: React.FC<HeaderProps> = ({
 };
 
 export default Header;
+function useResponsive(arg0: string) {
+  throw new Error('Function not implemented.');
+}
