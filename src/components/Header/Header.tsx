@@ -1,13 +1,11 @@
 import React from 'react';
+import { Box, Container } from '@mui/material';
 import SearchBar from './SearchBar';
 import CategoryMenu from './CategoryMenu';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import useTheme from '@mui/material/styles/useTheme';
-import { Theme } from '@mui/material/styles';
 import Logo from './Logo';
-import theme from '../../theme';
 import { useIsDesktop, useIsMobile } from '../../hooks/useResponsive';
+import theme from '../../theme';
+
 interface HeaderProps {
   categories: string[];
   onCategoryClick: (category: string) => void;
@@ -33,42 +31,34 @@ const Header: React.FC<HeaderProps> = ({
   loading,
   onClearSearch,
 }) => {
-  // const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  // const isSm = useMediaQuery(theme.breakpoints.up('sm'));
   const isMd = useIsDesktop();
   const isSm = useIsMobile();
+
   return (
     <Box
+      component="header"
       sx={{
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.colors.shadow.normal,
         width: '100%',
-        paddingTop: {
-          xs: '0',
-          sm: '1.5rem',
-        },
-        paddingBottom: {
-          xs: '1rem',
-          sm: '0.5rem',
-        },
+        paddingTop: 0,
+        paddingBottom: isSm ? '1rem' : '0',
       }}
     >
       <Container maxWidth="xl">
         <Box
           component="nav"
-          display="flex"
-          flexDirection={isMd ? 'row' : 'column'}
-          alignItems={isSm ? 'flex-start' : 'stretch'}
-          justifyContent={isMd ? 'space-between' : 'center'}
-          gap="1rem"
+          aria-label="Main navigation"
           sx={{
-            minHeight: '70px',
+            display: 'flex',
+            flexDirection: isMd ? 'row' : 'column',
+            alignItems: isSm ? 'flex-start' : 'center',
+            justifyContent: isMd ? 'space-between' : 'center',
+            gap: '1rem',
           }}
         >
           <Logo />
-
           <SearchBar
-            aria-label="Search jokes"
             onClearSearch={onClearSearch}
             onClearError={onClearError}
             searchQuery={searchQuery}
@@ -78,7 +68,6 @@ const Header: React.FC<HeaderProps> = ({
             loading={loading}
           />
           <CategoryMenu
-            aria-label="Category menu"
             categories={categories}
             onCategoryClick={onCategoryClick}
             onRandomJokeClick={onRandomJokeClick}
@@ -90,6 +79,3 @@ const Header: React.FC<HeaderProps> = ({
 };
 
 export default Header;
-function useResponsive(arg0: string) {
-  throw new Error('Function not implemented.');
-}

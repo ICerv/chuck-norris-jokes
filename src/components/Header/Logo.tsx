@@ -1,8 +1,11 @@
 import React from 'react';
-import { Box, Link } from '@mui/material';
-import LogoImage from '../../assets/images/logo.png';
+import { Link, Typography } from '@mui/material';
+import LogoImage from '../../assets/images/logo.svg';
+import { useIsMobile } from 'hooks/useResponsive';
 
 const Logo: React.FC = () => {
+  const isSm = useIsMobile();
+
   return (
     <Link
       href="https://api.chucknorris.io"
@@ -10,29 +13,33 @@ const Logo: React.FC = () => {
       rel="noopener noreferrer"
       aria-label="Chuck Norris Jokes - go to API homepage"
       sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
         textDecoration: 'none',
         color: 'inherit',
-        display: 'flex',
-        justifyContent: 'center',
       }}
     >
-      <Box
-        component="img"
-        src={LogoImage}
-        alt="Logo"
-        role="img"
-        sx={{
-          width: {
-            xs: '100px',
-            sm: '140px',
-          },
-          height: 'auto',
-          marginTop: {
-            xs: '0',
-            sm: '-45px',
-          },
-        }}
-      />
+      {isSm ? (
+        <Typography
+          variant="h6"
+          component="span"
+          sx={{ fontWeight: 'bold', paddingTop: '1rem' }}
+        >
+          Chuck Norris Jokes
+        </Typography>
+      ) : (
+        <img
+          src={LogoImage}
+          alt="Chuck Norris Jokes Logo"
+          role="img"
+          style={{
+            width: '120px',
+            height: 'auto',
+          }}
+          aria-hidden="false"
+        />
+      )}
     </Link>
   );
 };
