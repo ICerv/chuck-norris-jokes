@@ -8,10 +8,8 @@ import theme from './theme';
 import React from 'react';
 import Loading from './components/Loading';
 
-// Lazy-loaded App component
 const App = React.lazy(() => import('./App'));
 
-// ErrorBoundary Component
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean }
@@ -43,10 +41,7 @@ class ErrorBoundary extends React.Component<
           }}
         >
           <h1>Something went wrong.</h1>
-          <p>
-            Please try refreshing the page or contact support if the issue
-            persists.
-          </p>
+          <p>Please try refreshing the page.</p>
         </div>
       );
     }
@@ -60,16 +55,17 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <ErrorBoundary>
-        <React.Suspense fallback={<Loading />}>
-          <App />
-        </React.Suspense>
-      </ErrorBoundary>
-    </ThemeProvider>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary>
+          <React.Suspense fallback={<Loading />}>
+            <App />
+          </React.Suspense>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

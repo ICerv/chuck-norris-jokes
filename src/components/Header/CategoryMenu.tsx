@@ -3,9 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import useTheme from '@mui/material/styles/useTheme';
 import { useIsMobile } from '../../hooks/useResponsive';
-
+import theme from 'theme';
 interface CategoryMenuProps {
   categories: string[];
   onCategoryClick: (category: string) => void;
@@ -46,20 +45,28 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
       }}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Button for triggering menu */}
       <Button
         aria-controls={anchorEl ? 'category-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={Boolean(anchorEl)}
+        variant="outlined"
         color="secondary"
-        variant="text"
+        aria-label="Find jokes by category"
         onMouseEnter={handleMouseEnterButton}
         sx={{
           textTransform: 'none',
           fontWeight: 'bold',
+          fontSize: '1rem',
+          borderRadius: '1.5rem',
+          color: theme.palette.secondary.main,
+          backgroundColor: 'white',
         }}
       >
         Find Jokes by Category
       </Button>
+
+      {/* Dropdown Menu */}
       <Menu
         id="category-menu"
         anchorEl={anchorEl}
@@ -67,6 +74,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         onClose={() => setAnchorEl(null)}
         MenuListProps={{
           onMouseLeave: handleMouseLeave,
+          'aria-label': 'Category menu',
         }}
         anchorOrigin={{
           vertical: 'bottom',
@@ -77,6 +85,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
           horizontal: 'center',
         }}
       >
+        {/* Menu Items */}
         <Box
           display="grid"
           gridTemplateColumns={isSm ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'}
@@ -92,11 +101,18 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
                 alignItems: 'center',
                 display: 'flex',
                 justifyContent: 'center',
-                border: '1px solid lightgray',
+                border: `1px solid ${theme.palette.grey[300]}`,
                 borderRadius: '0.5rem',
                 padding: '0.5rem',
+                color: theme.palette.text.primary,
                 '&:hover': {
-                  borderColor: 'primary.main',
+                  borderColor: theme.palette.primary.main,
+                  backgroundColor: theme.palette.grey[100],
+                  color: theme.palette.primary.main,
+                },
+                '&:focus': {
+                  outline: `2px solid ${theme.palette.primary.main}`,
+                  outlineOffset: '2px',
                 },
               }}
             >
@@ -114,9 +130,6 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
               borderRadius: '1.5rem',
               padding: '0.5rem 2rem',
               textTransform: 'none',
-              '&:hover': {
-                backgroundColor: 'secondary.dark',
-              },
             }}
           >
             Random
