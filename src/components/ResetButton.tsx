@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Box, IconButton } from '@mui/material';
@@ -8,6 +8,7 @@ const ResetButton: React.FC<{ onResetClick: () => void }> = ({
   onResetClick,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const nodeRef = useRef<HTMLElement>(null as unknown as HTMLElement);
 
   const handleDragStart = () => {
     setIsDragging(true);
@@ -24,8 +25,13 @@ const ResetButton: React.FC<{ onResetClick: () => void }> = ({
   };
 
   return (
-    <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+    <Draggable
+      nodeRef={nodeRef}
+      onStart={handleDragStart}
+      onStop={handleDragStop}
+    >
       <Box
+        ref={nodeRef}
         sx={{
           position: 'fixed',
           bottom: '1rem',
@@ -35,6 +41,8 @@ const ResetButton: React.FC<{ onResetClick: () => void }> = ({
         }}
       >
         <IconButton
+          role="button"
+          aria-label="Reset button, draggable"
           onClick={handleClick}
           sx={{
             backgroundColor: theme.palette.secondary.main,

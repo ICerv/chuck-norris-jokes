@@ -14,7 +14,7 @@ import {
   resetSearchState,
   setSearchQuery,
 } from './redux/searchSlice';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 
 import Home from './pages/Home';
 import Header from './components/Header/Header';
