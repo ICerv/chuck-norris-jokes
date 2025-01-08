@@ -27,7 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   loading,
 }) => {
   const isSm = useIsMobile();
-  const maxCharacters = 30;
+  const maxCharacters = 20;
 
   return (
     <Box
@@ -44,7 +44,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <TextField
         size="small"
         label="Search Jokes"
-        aria-label="Search jokes"
+        aria-labelledby="search-label"
         variant="outlined"
         value={searchQuery}
         onChange={(e) => {
@@ -61,7 +61,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         error={!!errorMessage}
         helperText={
           errorMessage ||
-          `You can enter up to 30 characters (${searchQuery.length}/30)`
+          `You can enter up to ${maxCharacters} characters (${searchQuery.length}/${maxCharacters})`
         }
         aria-describedby="search-helper-text"
         fullWidth

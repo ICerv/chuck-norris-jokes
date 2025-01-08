@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
           sx={{
             display: 'flex',
             flexDirection: isMd ? 'row' : 'column',
-            alignItems: isSm ? 'flex-start' : 'center',
+            alignItems: 'center',
             justifyContent: isMd ? 'space-between' : 'center',
             gap: '1rem',
           }}

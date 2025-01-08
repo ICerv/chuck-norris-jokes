@@ -25,9 +25,7 @@ describe('JokeMobileView Component', () => {
 
   it('renders the Chuck Norris image', () => {
     render(<JokeMobileView {...props} />);
-    const image = screen.getByAltText(
-      'Illustration of Chuck Norris holding a board for displaying jokes',
-    );
+    const image = screen.getByAltText('Illustration of Chuck Norris');
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src', 'test-file-stub'); // Kontroluje mock
   });

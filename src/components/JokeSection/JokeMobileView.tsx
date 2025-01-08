@@ -44,7 +44,7 @@ const JokeMobileView: React.FC<JokeMobileViewProps> = ({
       <Box
         component="img"
         src={chuckNorrisMobile}
-        alt="Illustration of Chuck Norris holding a board for displaying jokes"
+        alt="Illustration of Chuck Norris"
         sx={{
           width: '100%',
           aspectRatio: '16 / 9',

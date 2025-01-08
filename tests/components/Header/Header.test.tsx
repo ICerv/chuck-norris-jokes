@@ -25,42 +25,36 @@ describe('Header Component', () => {
 
   it('renders the Logo component', () => {
     renderWithTheme(<Header {...mockProps} />);
-    expect(screen.getByAltText('Logo')).toBeInTheDocument();
+    expect(screen.getByAltText('Chuck Norris Jokes Logo')).toBeInTheDocument();
   });
 
-  // it('renders the SearchBar component', () => {
-  //   renderWithTheme(<Header {...mockProps} />);
-  //   expect(screen.getByLabelText('Search jokes')).toBeInTheDocument();
-  // });
+  it('renders the SearchBar component', () => {
+    renderWithTheme(<Header {...mockProps} />);
+    expect(screen.getByLabelText('Search Jokes')).toBeInTheDocument();
+  });
 
-  // it('renders the CategoryMenu component', () => {
-  //   renderWithTheme(<Header {...mockProps} />);
-  //   expect(screen.getByLabelText('Category menu')).toBeInTheDocument();
-  // });
+  it('renders the CategoryMenu component', () => {
+    renderWithTheme(<Header {...mockProps} />);
+    expect(screen.getByLabelText('Find jokes by category')).toBeInTheDocument();
+  });
 
-  // it('calls onSearchQueryChange when the search query changes', () => {
-  //   renderWithTheme(<Header {...mockProps} />);
-  //   const searchInput = screen.getByLabelText('Search jokes');
-  //   fireEvent.change(searchInput, { target: { value: 'chuck norris' } });
-  //   expect(mockProps.onSearchQueryChange).toHaveBeenCalledWith('chuck norris');
-  // });
+  it('calls onSearchQueryChange when the search query changes', () => {
+    renderWithTheme(<Header {...mockProps} />);
+    const searchInput = screen.getByLabelText('Search Jokes');
+    fireEvent.change(searchInput, { target: { value: 'chuck norris' } });
+    expect(mockProps.onSearchQueryChange).toHaveBeenCalledWith('chuck norris');
+  });
 
-  // it('calls onSearch when the search button is clicked', () => {
-  //   renderWithTheme(<Header {...mockProps} />);
-  //   const searchInput = screen.getByLabelText('Search jokes');
-  //   fireEvent.change(searchInput, { target: { value: 'chuck norris' } });
-  //   fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' });
-  //   expect(mockProps.onSearch).toHaveBeenCalled();
-  // });
+  it('calls onSearch when the search button is clicked', () => {
+    renderWithTheme(<Header {...mockProps} />);
+    const searchInput = screen.getByLabelText('Search Jokes');
+    fireEvent.change(searchInput, { target: { value: 'chuck norris' } });
+    fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' });
+    expect(mockProps.onSearch).toHaveBeenCalled();
+  });
 
-  // it('displays an error message when errorMessage is provided', () => {
-  //   renderWithTheme(<Header {...mockProps} errorMessage="Error occurred" />);
-  //   expect(screen.getByText('Error occurred')).toBeInTheDocument();
-  // });
-
-  // it('disables the search bar when loading is true', () => {
-  //   renderWithTheme(<Header {...mockProps} loading={true} />);
-  //   const searchInput = screen.getByLabelText('Search jokes');
-  //   expect(searchInput).toBeDisabled();
-  // });
+  it('displays an error message when errorMessage is provided', () => {
+    renderWithTheme(<Header {...mockProps} errorMessage="Error occurred" />);
+    expect(screen.getByText('Error occurred')).toBeInTheDocument();
+  });
 });
