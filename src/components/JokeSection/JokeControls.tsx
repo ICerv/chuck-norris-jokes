@@ -40,6 +40,7 @@ const JokeControls: React.FC<JokeControlsProps> = ({
       {isSearchQuery ? (
         <>
           <IconButton
+            role="button"
             onClick={onPrevious}
             disabled={currentIndex === 0}
             aria-label="Previous joke"
@@ -74,6 +75,7 @@ const JokeControls: React.FC<JokeControlsProps> = ({
             </Typography>
           </Box>
           <IconButton
+            role="button"
             onClick={onNext}
             disabled={currentIndex === (total || 1) - 1}
             aria-label="Next joke"
@@ -109,6 +111,7 @@ const JokeControls: React.FC<JokeControlsProps> = ({
                 aria-label={`Joke category: ${category}`}
               />
               <IconButton
+                role="button"
                 onClick={handleArrowClick}
                 aria-label="Next joke"
                 disableRipple
