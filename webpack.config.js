@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 
@@ -24,12 +25,12 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.(png|svg|webp)$/i,
+        test: /\.(png|svg|webp|ico)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: 'assets/images/[name].[ext]',
+              name: '[name].[ext]',
             },
           },
           {
@@ -59,10 +60,21 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      favicon: './public/favicon.ico',
       meta: {
         preconnect: 'https://api.chucknorris.io',
       },
       inject: 'body',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'public',
+          globOptions: {
+            ignore: ['**/index.html'],
+          },
+        },
+      ],
     }),
   ],
   optimization: {
