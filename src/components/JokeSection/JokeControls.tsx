@@ -98,7 +98,6 @@ const JokeControls: React.FC<JokeControlsProps> = ({
                 label={category}
                 size={isSm ? 'medium' : 'small'}
                 sx={{
-                  backgroundColor: theme.palette.secondary.main,
                   color: 'white',
                   fontFamily: "'Caveat', cursive",
                   width: 'fit-content',
