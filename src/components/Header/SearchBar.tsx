@@ -28,7 +28,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const isSm = useIsMobile();
   const maxCharacters = 20;
-  const minCharacters = 3;
 
   return (
     <Box
@@ -49,10 +48,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         variant="outlined"
         value={searchQuery}
         onChange={(e) => {
-          if (
-            e.target.value.length <= maxCharacters &&
-            e.target.value.length <= minCharacters
-          ) {
+          if (e.target.value.length <= maxCharacters) {
             onSearchQueryChange(e.target.value);
           }
         }}
@@ -93,7 +89,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         startIcon={<SearchIcon />}
         onClick={onSearch}
         aria-disabled={loading}
-        disabled={searchQuery.length < minCharacters || loading}
+        disabled={loading}
         sx={{
           borderRadius: '25px',
           padding: isSm ? '0.5rem' : '0.5rem 2rem',
